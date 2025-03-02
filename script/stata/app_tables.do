@@ -14,7 +14,7 @@ tsset ccode year
 global c_cov L_ln_gdppc L_vargdppc L_polityD77
 global n_cov L_ln_gdppc L_vargdppc L_polityD77 L_polityD77_neighbor
 
-******  Table 4: Effect of youth bulges on democratic improvements — Climatic variables interacted with the share of agriculture in GDP as instruments ******
+******  Table 21: Effect of youth bulges on improvements in the Polyarchy index — Climatic variables interacted with the share of agriculture in GDP as instrument ******
 
 use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
 tsset ccode year
@@ -87,3 +87,17 @@ estout t21_iv3_ols_1 t21_iv3_ols_2 t21_iv3_ss_1 t21_iv3_ss_2 t21_iv3_ss_3 t21_iv
 ** Panel B: First Stage Results Table **
 
 estout t21_iv3_fs_1 t21_iv3_fs_2 t21_iv3_fs_3 t21_iv3_fs_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t21_iv3_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+****** Table 22: Effect of youth bulges on improvements in the Polyarchy index — Longer-run panel ******
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+
+tsset ccode year
+drop if year<1800
+tsset ccode year
+
+eststo t5_lr_1: xi: xtreg transD77 L15_fenetre_15_15 i.year , fe cluster(ccode)
+eststo t5_lr_2: xi: xtreg transD77 L15_fenetre_15_15 L_vargdppc L_ln_gdppc L_polityD77 i.year , fe cluster(ccode)
+eststo t5_lr_3: xi: xtreg transD77 L15_fenetre_15_15 L_vargdppc L_ln_gdppc  L_polityD77  L_indust L_urb_harm  i.year , fe cluster(ccode)
+
+estout t5_lr_1 t5_lr_2 t5_lr_3 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t5_lr.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
