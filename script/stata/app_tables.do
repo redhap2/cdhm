@@ -161,3 +161,23 @@ eststo t25_south: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_pol
 eststo t25_caribb: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018) &  e_regiongeo!=. & e_regiongeo!=19, fe cluster(ccode)
 
 estout t25_north t25_central t25_south t25_caribb using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t25_cut_am.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+*** Table 27: Effect of youth male bulges on democratic improvements ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+
+eststo t27_1: xi: xtreg transD77 L_ratio_m_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t27_2: xi: xtreg transD77 L_ratio_m_t L_urb_harm  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t27_3: xi: xtreg transD77 L_ratio_m_t L_ln_poptotal  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t27_4: xi: xtreg transD77 L_ratio_m_t L_ls_2   i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t27_5: xi: xtreg transD77 L_ratio_m_t L_gini_disp i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t27_6: xi: xtreg transD77 L_ratio_m_t L_indust i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t27_7: xi: xtreg transD77 L_ratio_m_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t27_8: xi: xtreg transD77 L_ratio_m_t L_ln_gdppc L_vargdppc L_polityD77 L_ln_poptotal L_ls_2 L_gini_disp L_urb_harm L_indust i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+estout t27_1 t27_2 t27_3 t27_4 t27_5 t27_6 t27_7 t27_8 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t27_male.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
