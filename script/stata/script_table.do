@@ -245,10 +245,10 @@ drop if year<1940
 tsset ccode year
 
 
-eststo t6_1:xi:xtreg log1_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
-eststo t6_2:xi:xtreg log1_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77 L_indust L_urb_harm i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
-eststo t6_3:xi:xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
-eststo t6_4:xi:xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77 L_indust L_urb_harm i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t6_1:xi:xtreg L_log1_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t6_2:xi:xtreg L_log1_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77 L_indust L_urb_harm i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t6_3:xi:xtreg L_ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t6_4:xi:xtreg L_ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77 L_indust L_urb_harm i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
 estout t6_1 t6_2 t6_3 t6_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t6_riots_ols.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
@@ -271,10 +271,10 @@ eststo t7_iv4_ols: xi: xtreg transD77 L_log1_domestic6 L_ln_gdppc L_vargdppc L_p
 
 *** Second Stage Regressions ***
 
-eststo t7_iv4_ss_1: xi: xtivreg2 transD77 (L_log1_domestic6 = L17_netfertility5) i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo t7_iv4_ss_1: xi: xtivreg2 transD77 (L_log1_domestic6 = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
-eststo t7_iv4_ss_2: xi: xtivreg2 transD77 (L_log1_domestic6 = L17_netfertility5)L_ln_gdppc L_vargdppc L_polityD77 i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo t7_iv4_ss_2: xi: xtivreg2 transD77 (L_log1_domestic6 = L16_netfertility5)L_ln_gdppc L_vargdppc L_polityD77 i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 **** sinh(riots(t−1)) ****
@@ -285,10 +285,10 @@ eststo t7_iv5_ols: xi: xtreg transD77 L_ln2_domestic6 L_ln_gdppc L_vargdppc L_po
 
 *** Second Stage Regressions ***
 
-eststo t7_iv5_ss_1: xi: xtivreg2 transD77 (L_ln2_domestic6 = L17_netfertility5) i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo t7_iv5_ss_1: xi: xtivreg2 transD77 (L_ln2_domestic6 = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
-eststo t7_iv5_ss_2: xi: xtivreg2 transD77 (L_ln2_domestic6 = L17_netfertility5)L_ln_gdppc L_vargdppc L_polityD77 i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo t7_iv5_ss_2: xi: xtivreg2 transD77 (L_ln2_domestic6 = L16_netfertility5)L_ln_gdppc L_vargdppc L_polityD77 i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 
@@ -298,15 +298,15 @@ estadd scalar kp_fstat = e(rkf)
 
 *** First Stage Regressions ***
 
-eststo t7_iv4_fs_1: xi:xtreg L_log1_domestic6 L17_netfertility5 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
-eststo t7_iv4_fs_2: xi:xtreg L_log1_domestic6 L17_netfertility5 L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t7_iv4_fs_1: xi:xtreg L_log1_domestic6 L16_netfertility5 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t7_iv4_fs_2: xi:xtreg L_log1_domestic6 L16_netfertility5 L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
 **** sinh(riots(t−1)) ****
 
 *** First Stage Regressions ***
 
-eststo t7_iv5_fs_1: xi:xtreg L_ln2_domestic6 L17_netfertility5 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
-eststo t7_iv5_fs_2: xi:xtreg L_ln2_domestic6 L17_netfertility5 L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t7_iv5_fs_1: xi:xtreg L_ln2_domestic6 L16_netfertility5 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t7_iv5_fs_2: xi:xtreg L_ln2_domestic6 L16_netfertility5 L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
 ***** Export Tables *****
 
