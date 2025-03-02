@@ -42,7 +42,7 @@ eststo t2_6: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD7
 
 ***** Export Table *****
 
-estout t2_1 t2_2 t2_3 t2_4 t2_5 t2_6 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\t2_reg_ctl.tex", replace style(tex) varlabels(_cons "Constant") cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t2_1 t2_2 t2_3 t2_4 t2_5 t2_6 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t2_reg_ctl.tex", replace style(tex) varlabels(_cons "Constant") cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 *** Table 3: Effect of youth bulges on democratic improvements — Lagged fertility variables as instruments ***
 
@@ -142,11 +142,11 @@ eststo t3_iv2_fs_4: xi: xtreg L16_netfertility5 L21_netfertility_neighbor5 $n_co
 
 ** Panel A: Reduced Form & Second Stage Results Table **
 
-estout t3_iv1_ols_1 t3_iv1_ols_2 t3_iv1_ss_1 t3_iv1_ss_2 t3_iv2_ols_1 t3_iv2_ols_2 t3_iv2_ss_1 t3_iv2_ss_2 t3_iv2_ss_3 t3_iv2_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\t3_iv1_iv2_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t3_iv1_ols_1 t3_iv1_ols_2 t3_iv1_ss_1 t3_iv1_ss_2 t3_iv2_ols_1 t3_iv2_ols_2 t3_iv2_ss_1 t3_iv2_ss_2 t3_iv2_ss_3 t3_iv2_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t3_iv1_iv2_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ** Panel B: First Stage Results Table **
 
-estout t3_iv1_fs_1 t3_iv1_fs_2 t3_iv2_fs_1 t3_iv2_fs_2 t3_iv2_fs_3 t3_iv2_fs_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\t3_iv1_iv2_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t3_iv1_fs_1 t3_iv1_fs_2 t3_iv2_fs_1 t3_iv2_fs_2 t3_iv2_fs_3 t3_iv2_fs_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t3_iv1_iv2_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ******  Table 4: Effect of youth bulges on democratic improvements — Climatic variables interacted with the share of agriculture in GDP as instruments ******
 
@@ -216,11 +216,11 @@ eststo t4_iv3_fs_4: xi: xtreg L16_netfertility5 L17_mean5_spei12_agr2_2 L17_mean
 
 ** Panel A: Reduced Form & Second Stage Results Table **
 
-estout t4_iv3_ols_1 t4_iv3_ols_2 t4_iv3_ss_1 t4_iv3_ss_2 t4_iv3_ss_3 t4_iv3_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\t4_iv3_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t4_iv3_ols_1 t4_iv3_ols_2 t4_iv3_ss_1 t4_iv3_ss_2 t4_iv3_ss_3 t4_iv3_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t4_iv3_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ** Panel B: First Stage Results Table **
 
-estout t4_iv3_fs_1 t4_iv3_fs_2 t4_iv3_fs_3 t4_iv3_fs_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\t4_iv3_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t4_iv3_fs_1 t4_iv3_fs_2 t4_iv3_fs_3 t4_iv3_fs_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t4_iv3_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ****** Table 5: Effect of youth bulges on democratic improvements — Longer-run panel ******
 
@@ -234,7 +234,7 @@ eststo t5_lr_1: xi: xtreg transD77 L15_fenetre_15_15 i.year , fe cluster(ccode)
 eststo t5_lr_2: xi: xtreg transD77 L15_fenetre_15_15 L_vargdppc L_ln_gdppc L_polityD77 i.year , fe cluster(ccode)
 eststo t5_lr_3: xi: xtreg transD77 L15_fenetre_15_15 L_vargdppc L_ln_gdppc  L_polityD77  L_indust L_urb_harm  i.year , fe cluster(ccode)
 
-estout t5_lr_1 t5_lr_2 t5_lr_3 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\t5_lr.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t5_lr_1 t5_lr_2 t5_lr_3 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t5_lr.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ****** Table 6  Effect of youth bulges on riots — Add other controls ******
 
@@ -250,7 +250,7 @@ eststo t6_2:xi:xtreg log1_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_poli
 eststo t6_3:xi:xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 eststo t6_4:xi:xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77 L_indust L_urb_harm i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
-estout t6_1 t6_2 t6_3 t6_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\t6_riots_ols.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t6_1 t6_2 t6_3 t6_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t6_riots_ols.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 
 ****** Table 7: Effect of riots driven by a high youth ratio on democratic improvements—Lagged fertility as instrument ******
@@ -312,8 +312,8 @@ eststo t7_iv5_fs_2: xi:xtreg L_ln2_domestic6 L17_netfertility5 L_ln_gdppc L_varg
 
 ** Panel A: Reduced Form & Second Stage Results Table **
 
-estout t7_iv4_ols t7_iv4_ss_1 t7_iv4_ss_2 t7_iv5_ols t7_iv5_ss_1 t7_iv5_ss_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\t7_iv4_iv5_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t7_iv4_ols t7_iv4_ss_1 t7_iv4_ss_2 t7_iv5_ols t7_iv5_ss_1 t7_iv5_ss_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t7_iv4_iv5_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ** Panel B: First Stage Results Table **
 
-estout t7_iv4_fs_1 t7_iv4_fs_2 t7_iv5_fs_1 t7_iv5_fs_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\t7_iv4_iv5_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t7_iv4_fs_1 t7_iv4_fs_2 t7_iv5_fs_1 t7_iv5_fs_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t7_iv4_iv5_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
