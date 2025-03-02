@@ -14,7 +14,6 @@ tsset ccode year
 global c_cov L_ln_gdppc L_vargdppc L_polityD77
 global n_cov L_ln_gdppc L_vargdppc L_polityD77 L_polityD77_neighbor
 
-
 *** Table 1: Summary statistics for baseline sample (since 1951) ***
 
 use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
@@ -164,7 +163,7 @@ tsset ccode year
 	eststo t4_iv3_ols_1: xi: xtreg transD77 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 i.year if inrange(year, 1950, 2018) & L_ratio_15_19_t !=., fe cluster(ccode)
 
 * Col 2, OLS (covariates)
-	eststo t4_iv3_ols_2: xi: xtreg transD77  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 L.ln_gdppc L.vargdppc L.polityD77   i.year if inrange(year, 1950, 2018) & L_ratio_15_19_t !=., fe cluster(ccode)
+	eststo t4_iv3_ols_2: xi: xtreg transD77  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018) & L_ratio_15_19_t !=., fe cluster(ccode)
 
 *** Youth Ratio Instrumentation ***
 
@@ -200,7 +199,7 @@ estadd scalar kp_fstat = e(rkf)
 eststo t4_iv3_fs_1: xi: xtreg L_ratio_15_19_t  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
 * Col 4, First Stage (covariates)
-eststo t4_iv3_fs_2: xi: xtreg L_ratio_15_19_t  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 L.ln_gdppc L.vargdppc L.polityD77 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t4_iv3_fs_2: xi: xtreg L_ratio_15_19_t  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 L_ln_gdppc L_vargdppc L_polityD77 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
 *** Country Net Fertility Rate Instrumentation ****
 
@@ -210,7 +209,7 @@ eststo t4_iv3_fs_2: xi: xtreg L_ratio_15_19_t  L17_mean5_spei12_agr2_2 L17_mean5
 eststo t4_iv3_fs_3: xi: xtreg L16_netfertility5 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
 * Col 6, First Stage (covariates)
-eststo t4_iv3_fs_4: xi: xtreg L16_netfertility5 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 L.ln_gdppc L.vargdppc L.polityD77 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t4_iv3_fs_4: xi: xtreg L16_netfertility5 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 L_ln_gdppc L_vargdppc L_polityD77 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
 ***** Export Tables *****
 
