@@ -82,11 +82,11 @@ eststo t21_iv3_fs_4: xi: xtreg L16_netfertility5 L17_mean5_spei12_agr2_2 L17_mea
 
 ** Panel A: Reduced Form & Second Stage Results Table **
 
-estout t21_iv3_ols_1 t21_iv3_ols_2 t21_iv3_ss_1 t21_iv3_ss_2 t21_iv3_ss_3 t21_iv3_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t21_iv3_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t21_iv3_ols_1 t21_iv3_ols_2 t21_iv3_ss_1 t21_iv3_ss_2 t21_iv3_ss_3 t21_iv3_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t21_iv3_vdem_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ** Panel B: First Stage Results Table **
 
-estout t21_iv3_fs_1 t21_iv3_fs_2 t21_iv3_fs_3 t21_iv3_fs_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t21_iv3_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t21_iv3_fs_1 t21_iv3_fs_2 t21_iv3_fs_3 t21_iv3_fs_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t21_iv3_vdem_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ****** Table 22: Effect of youth bulges on improvements in the Polyarchy index — Longer-run panel ******
 
@@ -96,8 +96,9 @@ tsset ccode year
 drop if year<1800
 tsset ccode year
 
-eststo t5_lr_1: xi: xtreg transD77 L15_fenetre_15_15 i.year , fe cluster(ccode)
-eststo t5_lr_2: xi: xtreg transD77 L15_fenetre_15_15 L_vargdppc L_ln_gdppc L_polityD77 i.year , fe cluster(ccode)
-eststo t5_lr_3: xi: xtreg transD77 L15_fenetre_15_15 L_vargdppc L_ln_gdppc  L_polityD77  L_indust L_urb_harm  i.year , fe cluster(ccode)
 
-estout t5_lr_1 t5_lr_2 t5_lr_3 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\main\t5_lr.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+eststo t22_lr_1: xi: xtreg vdem_trans_2 L15_fenetre_15_15 i.year , fe cluster(ccode)
+eststo t22_lr_2: xi: xtreg vdem_trans_2 L15_fenetre_15_15 L_vargdppc L_ln_gdppc L_v2x_polyarchy i.year , fe cluster(ccode)
+eststo t22_lr_3: xi: xtreg vdem_trans_2 L15_fenetre_15_15 L_vargdppc L_ln_gdppc  L_v2x_polyarchy  L_indust L_urb_harm  i.year , fe cluster(ccode)
+
+estout t22_lr_1 t22_lr_2 t22_lr_3 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t22_lr_vdem.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
