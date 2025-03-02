@@ -129,8 +129,6 @@ graph twoway hist MVL if baseline2==1, percent color(gs12%30) yaxis(2)|| line co
 
 graph export "C:\Users\Redha CHABA\Documents\wp_git\cdhm\plots\marginal_plots\f3_rec_a.jpg", width(4000) replace
 
-
-
 use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
 
 tsset ccode year
@@ -163,3 +161,65 @@ coefplot ///
     scheme(s2color)
 
 graph export "C:\Users\Redha CHABA\Documents\wp_git\cdhm\plots\marginal_plots\f3_rec_b.jpg", width(4000) replace
+
+
+*** Figure 3: Interaction effects between recessions and the youth share ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+eststo xi:xtreg ln2_domestic6 neggrowth_3 ratio_15_19_t  c.ratio_15_19_t#c.neggrowth_3  ln_gdppc i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+generate baseline2=1 if e(sample)
+matrix b=e(b)
+matrix V=e(V)
+
+matrix b1=e(b1)
+
+matrix b3=e(b3)
+
+scalar b1=b[1,1]
+scalar b3=b[1,3]
+
+scalar varb1=V[1,1]
+scalar varb3=V[3,3]
+
+scalar covb1b3=V[1,3]
+
+scalar list b1 b3 varb1 varb3 covb1b3
+
+generate MVL= L_ratio_15_19_t
+
+gen conbl=b1+b3*MVL
+
+gen consl=sqrt(varb1+varb3*(MVL^2)+2*covb1b3*MVL) 
+
+gen al=1.65*consl
+
+gen upperl=conbl+al
+
+gen lowerl=conbl-al
+
+*********************;
+* Generate Rug Plot *;
+*********************;
+
+gen where=0.5
+gen pipe = "|"
+
+egen tag_youth= tag(L_ratio_15_19_t)
+gen yline=0
+
+graph twoway hist MVL if baseline2==1, percent color(gs12%30) yaxis(2)|| line conbl   MVL, lpattern (solid) clwidth(medium)  clcolor(black) ||   line upperl MVL, clpattern(longdash) clwidth(thin) clcolor(gs8) sort ||   line lowerl MVL, clpattern(longdash) clwidth(thin) clcolor(gs8) sort|| , yscale(noline) xscale(noline) yline(0, lcolor(black))  xtitle("Youth Ratio", size(3))xsca(titlegap(2)) ysca(titlegap(2)) ytitle("Marginal Effect of Recession", size(3)) scheme(s2mono) graphregion(fcolor(white)) legend(off) xlabel(0.05 "5%" 0.1 "10%" 0.15 "15%" 0.2 "20%" 0.25 "25%")
+
+graph export "C:\Users\Redha CHABA\Documents\wp_git\cdhm\plots\marginal_plots\f3_rec_a.jpg", width(4000) replace
+
+
+*** Figure 4: Marginal effect of recessions on riots as a function of the youth ratio ***
+
+xi:xtreg ln2_domestic6 neggrowth_3 ratio_15_19_t  c.ratio_15_19_t#c.neggrowth_3  ln_gdppc i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+
