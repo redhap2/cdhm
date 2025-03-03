@@ -699,18 +699,120 @@ eststo t27_8: xi: xtreg transD77 L_ratio_m_t L_ln_gdppc L_vargdppc L_polityD77 L
 estout t27_1 t27_2 t27_3 t27_4 t27_5 t27_6 t27_7 t27_8 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t27_male.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 
+*** Table 28: Different measures of political transitions ***
 
-eststo TA11: xi: xtreg transD773 L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo TA12: xi: xtreg transD773 L15.netfertility  L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)		
-eststo TA13: xi: xtivreg2 transD773 (L.ratio_15_19_t = L15.netfertility) L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
 
-eststo TA14: xi: xtreg transitionD77 L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo TA15: xi: xtreg transitionD77 L15.netfertility L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo TA16: xi: xtivreg2 transitionD77 (L.ratio_15_19_t = L15.netfertility) L.ln_gdppc L.vargdppc L.polityD77    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+drop if year<1940
+tsset ccode year
 
-eststo TA20: xi: xtreg transML L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo TA21: xi: xtreg transML L15.netfertility L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo TA22: xi: xtivreg2 transML (L.ratio_15_19_t = L15.netfertility) L.ln_gdppc L.vargdppc L.polityD77    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo t28_1: xi: xtreg transD773 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t28_2: xi: xtreg transD773 L16_netfertility5  L_ln_gdppc L_vargdppc L_polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)		
+eststo t28_3: xi: xtivreg2 transD773 (L_ratio_15_19_t = L16_netfertility5) L_ln_gdppc L_vargdppc L_polityD77     i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
 
+eststo t28_4: xi: xtreg transitionD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t28_5: xi: xtreg transitionD77 L16_netfertility5 L_ln_gdppc L_vargdppc L_polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t28_6: xi: xtivreg2 transitionD77 (L_ratio_15_19_t = L16_netfertility5) L_ln_gdppc L_vargdppc L_polityD77    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
 
+eststo t28_7: xi: xtreg transML L_ratio_15_19_t L_ln_gdppc L_vargdppc L_C_MLDI     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t28_8: xi: xtreg transML L16_netfertility5 L_ln_gdppc L_vargdppc L_C_MLDI     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t28_9: xi: xtivreg2 transML (L_ratio_15_19_t = L16_netfertility5) L_ln_gdppc L_vargdppc L_C_MLDI    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
 
+estout t28_1 t28_2 t28_3 t28_4 t28_5 t28_6 t28_7 t28_8 t28_9 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t28_pol_trans.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+*** Table 29: Effect of youth bulges on revolution and democratic reversal ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+eststo t29_1: xi: xtreg log1_domestic7 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_log1_domestic7     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t29_2: xi: xtreg log1_domestic7 L16_netfertility5 L_ln_gdppc L_vargdppc L_log1_domestic7     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t29_3: xi: xtivreg2 log1_domestic7 (L_ratio_15_19_t = L16_netfertility5) L_ln_gdppc L_vargdppc L_log1_domestic7    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+eststo t29_4: xi: xtreg ln2_domestic7 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_ln2_domestic7     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t29_5: xi: xtreg ln2_domestic7 L16_netfertility5 L_ln_gdppc L_vargdppc L_ln2_domestic7     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t29_6: xi: xtivreg2 ln2_domestic7 (L_ratio_15_19_t = L16_netfertility5) L_ln_gdppc L_vargdppc L_ln2_domestic7    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+eststo t29_7: xi: xtreg negtransD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t29_8: xi: xtreg negtransD77 L16_netfertility5  L_ln_gdppc L_vargdppc L_polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)		
+eststo t29_9: xi: xtivreg2 negtransD77 (L_ratio_15_19_t = L16_netfertility5) L_ln_gdppc L_vargdppc L_polityD77     i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+estout t29_1 t29_2 t29_3 t29_4 t29_5 t29_6 t29_7 t29_8 t29_9 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t29_reversal.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+*** Table 30: Effect of riots driven by a high youth ratio on democratic reversals — Lagged fertility as instrument ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+***** Panel A: Reduced Form & Second Stage Results Regressions *****
+
+**** ln(riots(t-1)) Instrument ****
+
+* Col 1, OLS (covariates)
+eststo t30_iv1_ols: xi: xtreg transD77 L_log1_domestic6 $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+*** Second Stage Regressions ***
+
+* Col 2, IV (no covariates)
+eststo t30_iv1_ss_1: xi: xtivreg2 transD77 (L_log1_domestic6 = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+* Col 3, IV (covariates)
+eststo t30_iv1_ss_2: xi: xtivreg2 transD77 (L_log1_domestic6 = L16_netfertility5) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+**** asinh(riots(t-1)) Instrument ****
+
+* Col 4, OLS (covariates)
+eststo t30_iv2_ols: xi: xtreg transD77 L_ln2_domestic6 $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+*** Second Stage Regressions ***
+
+* Col 5, IV (no covariates)
+eststo t30_iv2_ss_1: xi: xtivreg2 transD77 (L_ln2_domestic6 = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+* Col 6, IV (covariates)
+eststo t30_iv2_ss_2: xi: xtivreg2 transD77 (L_ln2_domestic6 = L16_netfertility5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+***** Panel B: First Stage Results Regressions *****
+
+**** ln(riots(t-1)) Instrument ****
+
+* Col 2, First Stage (no covariates)
+eststo t30_iv1_fs_1: xi: xtreg L_log1_domestic6 L16_netfertility5 i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+* Col 3, First Stage (covariates)
+eststo t30_iv1_fs_2: xi: xtreg L_log1_domestic6 L16_netfertility5 $c_cov i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+**** asinh(riots(t-1)) Instrument ****
+
+* Col 4, First Stage (no covariates)
+eststo t30_iv2_fs_1: xi: xtreg L_ln2_domestic6 L21_netfertility_neighbor5 i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+* Col 5, First Stage (covariates)
+eststo t30_iv2_fs_2: xi: xtreg L_ln2_domestic6 L21_netfertility_neighbor5 $n_cov i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+***** Export Tables *****
+
+** Panel A: Reduced Form & Second Stage Results Table **
+
+estout t30_iv1_ols t30_iv1_ss_1 t30_iv1_ss_2 t30_iv2_ols t30_iv2_ss_1 t30_iv2_ss_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t30_iv1_iv2_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+** Panel B: First Stage Results Table **
+
+estout t30_iv1_fs_1 t30_iv1_fs_2 t30_iv2_fs_1 t30_iv2_fs_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t30_iv1_iv2_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
