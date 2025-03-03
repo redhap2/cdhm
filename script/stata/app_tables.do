@@ -14,8 +14,6 @@ tsset ccode year
 global c_cov L_ln_gdppc L_vargdppc L_polityD77
 global n_cov L_ln_gdppc L_vargdppc L_polityD77 L_polityD77_neighbor
 
-
-
 *** Table 8: Effect of youth bulges on democratic improvements — Regression with additional controls ***
 
 use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
@@ -58,9 +56,37 @@ eststo t9_iv2_fs_2: xi: xtreg L_ratio_15_19_t L22.netfertility_neighbor5 $n_cov 
 eststo t9_iv3_fs_1: xi :xtreg L_ratio_15_19_t L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 eststo t9_iv3_fs_2: xi: xtreg L_ratio_15_19_t L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov L_transD77_neighbor i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
-estout t9_iv2_ss_1 t9_iv2_ss_2 t9_iv3_ss_1 t9_iv3_ss_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t9_iv2_iv3_neigh_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t9_iv2_ss_1 t9_iv2_ss_2 t9_iv3_ss_1 t9_iv3_ss_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t9_iv2_iv3_neigh_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*")
 
-estout t9_iv2_fs_1 t9_iv2_fs_2 t9_iv3_fs_1 t9_iv2_fs_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t9_iv2_iv3_neigh_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t9_iv2_fs_1 t9_iv2_fs_2 t9_iv3_fs_1 t9_iv3_fs_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t9_iv2_iv3_neigh_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+*** Table 10: Anderson-Rubin (AR) test ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+* Col 1, IV 1
+	eststo t10_iv1: xi: xtivreg2 transD77 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+	estadd scalar kp_fstat = e(rkf)
+	weakiv
+	* p-value: 0.0072 | Conf. level: 95% | Conf. Set: [ .207443,  1.2496] 
+
+* Col 2, IV 2
+	eststo t10_iv2: xi: xtivreg2 transD77 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+	estadd scalar kp_fstat = e(rkf)
+	weakiv
+	* p-value: 0.0400 | Conf. level: 95% | Conf. Set: [ .104946, 2.88594]  
+
+* Col 3, IV 3
+	eststo t10_iv3: xi: xtivreg2 transD77 (L_ratio_15_19_t =  L17_mean5_spei12_agr2 L17_mean5_spei12 L17_agrgdp) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+	estadd scalar kp_fstat = e(rkf)
+	weakiv
+	* p-value: 0.0222 | Conf. level: 95% | Conf. Set: [ .748427, 8.37267]  
+
+estout t10_iv1 t10_iv2 t10_iv3 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t10_ar_iv.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*")
 
 ******  Table 21: Effect of youth bulges on improvements in the Polyarchy index — Climatic variables interacted with the share of agriculture in GDP as instrument ******
 
