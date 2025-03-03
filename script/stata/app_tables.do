@@ -206,12 +206,211 @@ tsset ccode year
 drop if year<1940
 tsset ccode year
 
-eststo t2_1: xi: xtreg transD77 L_ratio_15_19_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo t2_2: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo t2_3: xi: xtreg transD77 L_ratio_15_19_t L_vargdppc   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo t2_4: xi: xtreg transD77 L_ratio_15_19_t L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo t2_5: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo t2_6: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77 L_ln_poptotal L_ls_2 L_gini_disp L_urb_harm L_indust i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t16_1: xi: xtreg transD77 L_ratio_15_24_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t16_2: xi: xtreg transD77 L_ratio_15_24_t L_ln_gdppc  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t16_3: xi: xtreg transD77 L_ratio_15_24_t L_vargdppc   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t16_4: xi: xtreg transD77 L_ratio_15_24_t L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t16_5: xi: xtreg transD77 L_ratio_15_24_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t16_6: xi: xtreg transD77 L_ratio_15_24_t L_ln_gdppc L_vargdppc L_polityD77 L_ln_poptotal L_ls_2 L_gini_disp L_urb_harm L_indust i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+estout t16_1 t16_2 t16_3 t16_4 t16_5 t16_6 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t16_1524.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+*** Table 17: Effect of the share of population aged 15 to 24 on democratic improvements — Lagged fertility variables as instruments ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+***** Panel A: Reduced Form & Second Stage Results Regressions *****
+
+**** Country Net Fertility Rate Instrument ****
+
+*** Reduced Form Regressions ***
+
+* Col 1, OLS (no covariates)
+eststo t17_iv1_ols_1: xi: xtreg transD77 L16_netfertility5 i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+* Col 2, OLS (covariates)
+eststo t17_iv1_ols_2: xi: xtreg transD77 L16_netfertility5 $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+*** Second Stage Regressions ***
+
+* Col 3, IV (no covariates)
+eststo t17_iv1_ss_1: xi: xtivreg2 transD77 (L_ratio_15_24_t = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+* Col 4, IV (covariates)
+eststo t17_iv1_ss_2: xi: xtivreg2 transD77 (L_ratio_15_24_t = L16_netfertility5) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+**** Neighbor Net Fertility Rate Instrument ****
+
+*** Reduced Form Regressions ***
+
+* Col 5, OLS (no covariates)
+eststo t17_iv2_ols_1: xi: xtreg transD77 L21_netfertility_neighbor5 i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+* Col 6, OLS (covariates)
+eststo t17_iv2_ols_2: xi: xtreg transD77 L21_netfertility_neighbor5 $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+*** Second Stage Regressions ***
+
+** Youth Ratio Instrumentation **
+
+* Col 7, IV (no covariates)
+eststo t17_iv2_ss_1: xi: xtivreg2 transD77 (L_ratio_15_24_t = L21_netfertility_neighbor5) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+* Col 8, IV (covariates)
+eststo t17_iv2_ss_2: xi: xtivreg2 transD77 (L_ratio_15_24_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+** Country Net Fertility Instrumentation **
+
+* Col 9, IV (no covariates)
+eststo t17_iv2_ss_3: xi: xtivreg2 transD77 (L16_netfertility5 = L21_netfertility_neighbor5) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+* Col 10, IV (covariates)
+eststo t17_iv2_ss_4: xi: xtivreg2 transD77 (L16_netfertility5 = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+***** Panel B: First Stage Results Regressions *****
+
+**** Country Net Fertility Rate Instrument ****
+
+*** First Stage Regressions ***
+
+* Col 3, First Stage (no covariates)
+eststo t17_iv1_fs_1: xi: xtreg L_ratio_15_24_t L16_netfertility5 i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+* Col 4, First Stage (covariates)
+eststo t17_iv1_fs_2: xi: xtreg L_ratio_15_24_t L16_netfertility5 $c_cov i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+**** Neighbor Net Fertility Rate Instrument ****
+
+*** First Stage Regressions ***
+
+** Youth Ratio Instrumentation **
+
+* Col 7, First Stage (no covariates)
+eststo t17_iv2_fs_1: xi: xtreg L_ratio_15_24_t L21_netfertility_neighbor5 i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+* Col 8, First Stage (covariates)
+eststo t17_iv2_fs_2: xi: xtreg L_ratio_15_24_t L21_netfertility_neighbor5 $n_cov i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+** Country Net Fertility Instrumentation **
+
+* Col 9, First Stage (no covariates)
+eststo t17_iv2_fs_3: xi: xtreg L16_netfertility5 L21_netfertility_neighbor5 i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+* Col 10, First Stage (covariates)
+eststo t17_iv2_fs_4: xi: xtreg L16_netfertility5 L21_netfertility_neighbor5 $n_cov i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+
+***** Export Tables *****
+
+** Panel A: Reduced Form & Second Stage Results Table **
+
+estout t17_iv1_ols_1 t17_iv1_ols_2 t17_iv1_ss_1 t17_iv1_ss_2 t17_iv2_ols_1 t17_iv2_ols_2 t17_iv2_ss_1 t17_iv2_ss_2 t17_iv2_ss_3 t17_iv2_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t17_iv1_iv2_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+** Panel B: First Stage Results Table **
+
+estout t17_iv1_fs_1 t17_iv1_fs_2 t17_iv2_fs_1 t17_iv2_fs_2 t17_iv2_fs_3 t17_iv2_fs_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t17_iv1_iv2_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+*** Table 18: Effect of the share of the population aged 15 to 24 on democratic improvements—Climatic variables interacted with the share of agriculture in GDP as instruments ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+***** Panel A: Reduced Form & Second Stage Results Regressions*****
+
+**** Reduced Form Regressions ****
+
+* Col 1, OLS (no covariates)
+	eststo t18_iv3_ols_1: xi: xtreg transD77 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 i.year if inrange(year, 1950, 2018) & L_ratio_15_24_t !=., fe cluster(ccode)
+
+* Col 2, OLS (covariates)
+	eststo t18_iv3_ols_2: xi: xtreg transD77  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018) & L_ratio_15_24_t !=., fe cluster(ccode)
+
+*** Youth Ratio Instrumentation ***
+
+** Second Stage Regressions **
+
+* Col 3, IV (no covariates)
+	eststo t18_iv3_ss_1: xi: xtivreg2 transD77 (L_ratio_15_24_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+	
+* Col 4, IV (covariates)
+	eststo t18_iv3_ss_2: xi: xtivreg2 transD77 (L_ratio_15_24_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+	
+*** Country Net Fertility Rate Instrumentation ****
+
+** Second Stage Regressions **
+
+* Col 5, IV (no covariates)
+	eststo t18_iv3_ss_3: xi: xtivreg2 transD77 (L16_netfertility5 =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+	
+* Col 6, IV (covariates)
+	eststo t18_iv3_ss_4: xi: xtivreg2 transD77 (L16_netfertility5 =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+***** Panel B: First Stage Results Regressions *****
+
+*** Youth Ratio Instrumentation ***
+
+** First Stage Regressions **
+
+* Col 3, First Stage (no covariates)
+eststo t18_iv3_fs_1: xi: xtreg L_ratio_15_24_t  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+
+* Col 4, First Stage (covariates)
+eststo t18_iv3_fs_2: xi: xtreg L_ratio_15_24_t  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 L_ln_gdppc L_vargdppc L_polityD77 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+
+*** Country Net Fertility Rate Instrumentation ****
+
+** First Stage Regressions **
+
+* Col 5, First Stage (no covariates)
+eststo t18_iv3_fs_3: xi: xtreg L16_netfertility5 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+
+* Col 6, First Stage (covariates)
+eststo t18_iv3_fs_4: xi: xtreg L16_netfertility5 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 L_ln_gdppc L_vargdppc L_polityD77 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+
+***** Export Tables *****
+
+** Panel A: Reduced Form & Second Stage Results Table **
+
+estout t18_iv3_ols_1 t18_iv3_ols_2 t18_iv3_ss_1 t18_iv3_ss_2 t18_iv3_ss_3 t18_iv3_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t18_iv3_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+** Panel B: First Stage Results Table **
+
+estout t18_iv3_fs_1 t18_iv3_fs_2 t18_iv3_fs_3 t18_iv3_fs_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t18_iv3_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+*** Table 19: Effect of youth bulges on improvements in the Polyarchy index ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+eststo t19_1: xi: xtreg vdem_trans_2 L_ratio_15_19_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t19_2: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_ln_gdppc  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t19_3: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_vargdppc   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t19_4: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t19_5: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t19_6: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77 L_ln_poptotal L_ls_2 L_gini_disp L_urb_harm L_indust i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+estout t19_1 t19_2 t19_3 t19_4 t19_5 t19_6 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t19_vdem_ols.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+
 
 ******  Table 21: Effect of youth bulges on improvements in the Polyarchy index — Climatic variables interacted with the share of agriculture in GDP as instrument ******
 
