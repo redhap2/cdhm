@@ -40,9 +40,9 @@ tsset ccode year
 drop if year<1940
 tsset ccode year
 
-eststo t9_iv2_ss_1: xi: xtivreg2 transD77 (L_ratio_15_19_t = L22.netfertility_neighbor5) L_transD77_neighbor i.year if inrange(year, 1950, 2018), fe  cluster(ccode)	
+eststo t9_iv2_ss_1: xi: xtivreg2 transD77 (L_ratio_15_19_t = L22_netfertility_neighbor5) L_transD77_neighbor i.year if inrange(year, 1950, 2018), fe  cluster(ccode)	
 estadd scalar kp_fstat = e(rkf)
-eststo t9_iv2_ss_2: xi: xtivreg2 transD77 (L_ratio_15_19_t = L22.netfertility_neighbor5) $n_cov L_transD77_neighbor i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo t9_iv2_ss_2: xi: xtivreg2 transD77 (L_ratio_15_19_t = L22_netfertility_neighbor5) $n_cov L_transD77_neighbor i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 eststo t9_iv3_ss_1: xi: xtivreg2 transD77 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) L_transD77_neighbor i.year if inrange(year, 1950, 2018), fe cluster(ccode)
@@ -50,8 +50,8 @@ estadd scalar kp_fstat = e(rkf)
 eststo t9_iv3_ss_2: xi: xtivreg2 transD77 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov L_transD77_neighbor i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 	
-eststo t9_iv2_fs_1: xi :xtreg L_ratio_15_19_t L22.netfertility_neighbor5 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
-eststo t9_iv2_fs_2: xi: xtreg L_ratio_15_19_t L22.netfertility_neighbor5 $n_cov L_transD77_neighbor i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t9_iv2_fs_1: xi :xtreg L_ratio_15_19_t L22_netfertility_neighbor5 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
+eststo t9_iv2_fs_2: xi: xtreg L_ratio_15_19_t L22_netfertility_neighbor5 $n_cov L_transD77_neighbor i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
 eststo t9_iv3_fs_1: xi :xtreg L_ratio_15_19_t L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 eststo t9_iv3_fs_2: xi: xtreg L_ratio_15_19_t L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov L_transD77_neighbor i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
@@ -169,19 +169,34 @@ tsset ccode year
 drop if year<1940
 tsset ccode year
 
-eststo t11_1: xi: xtreg ln2_domestic6 L_ratio_15_19_t   L_vargdppc L_youth_rece_4    i.year if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo t11_2: xi: xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc  L_vargdppc L_youth_rece_4  L_polityD77     i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t14_1: xi: xtreg ln2_domestic6 L_ratio_15_19_t   L_vargdppc L_youth_rece_4    i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t14_2: xi: xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc  L_vargdppc L_youth_rece_4  L_polityD77     i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 
-eststo t11_3: xi: xtreg ln2_domestic6 L_ratio_15_19_t  L_neggrowth_3   L_youth_rece_5    i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo t11_4: xi: xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_neggrowth_3   L_youth_rece_5 L_polityD77    i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t14_3: xi: xtreg ln2_domestic6 L_ratio_15_19_t  L_neggrowth_3   L_youth_rece_5    i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t14_4: xi: xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_neggrowth_3   L_youth_rece_5 L_polityD77    i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 
-eststo t11_5: xi: xtreg ln2_domestic6 L_ratio_15_19_t  L_neggrowth_4   L_youth_rece_6    i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo t11_6: xi: xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_neggrowth_4   L_youth_rece_6 L_polityD77    i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t14_5: xi: xtreg ln2_domestic6 L_ratio_15_19_t  L_neggrowth_4   L_youth_rece_6    i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t14_6: xi: xtreg ln2_domestic6 L_ratio_15_19_t L_ln_gdppc L_neggrowth_4   L_youth_rece_6 L_polityD77    i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
 
-estout t11_1 t11_2 t11_3 t11_4 t11_5 t11_6 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t11_rece.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t14_1 t14_2 t14_3 t14_4 t14_5 t14_6 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t14_rece_riots.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
+*** Table 15: Alternative coding rules for the Polity2 variable ***
 
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
 
+tsset ccode year
+drop if year<1940
+tsset ccode year
+
+eststo t15_1: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t15_2: xi: xtreg trans L_ratio_15_19_t L_ln_gdppc L_vargdppc L_e_polity2  i.year, fe cluster(ccode)	
+eststo t15_3: xi: xtreg transF77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityF77  i.year, fe cluster(ccode)	
+eststo t15_4: xi: xtreg transL77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityL77  i.year, fe cluster(ccode)	
+eststo t15_5: xi: xtreg transD7788 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD7788  i.year, fe cluster(ccode)	
+eststo t15_6: xi: xtreg transD77F88 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77F88  i.year, fe cluster(ccode)	
+eststo t15_7: xi: xtreg transD77L88 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77L88  i.year, fe cluster(ccode)	
+
+estout t15_1 t15_2 t15_3 t15_4 t15_5 t15_6 t15_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t15_recode.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ******  Table 21: Effect of youth bulges on improvements in the Polyarchy index — Climatic variables interacted with the share of agriculture in GDP as instrument ******
 
