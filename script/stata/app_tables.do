@@ -816,3 +816,21 @@ estout t30_iv1_ols t30_iv1_ss_1 t30_iv1_ss_2 t30_iv2_ols t30_iv2_ss_1 t30_iv2_ss
 ** Panel B: First Stage Results Table **
 
 estout t30_iv1_fs_1 t30_iv1_fs_2 t30_iv2_fs_1 t30_iv2_fs_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t30_iv1_iv2_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+*** Table 31: Placebo tests: Alternative age tranche ratios with the very young and the old ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+eststo t31_1: xi: xtreg transD77 L_ratio_00_04_t L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t31_2: xi: xtreg transD77 L_ratio_05_09_t L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t31_3: xi: xtreg transD77 L_ratio_10_14_t L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t31_4: xi: xtreg transD77 L_ratio_60_64_t L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t31_5: xi: xtreg transD77 L_ratio_65_69_t L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t31_6: xi: xtreg transD77 L_ratio_70_74_t L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t31_7: xi: xtreg transD77 L_ratio_75_79_t L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+
+estout t31_1 t31_2 t31_3 t31_4 t31_5 t31_6 t31_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t31_ratio_var.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
