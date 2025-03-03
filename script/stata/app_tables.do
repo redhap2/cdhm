@@ -198,6 +198,21 @@ eststo t15_7: xi: xtreg transD77L88 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_poli
 
 estout t15_1 t15_2 t15_3 t15_4 t15_5 t15_6 t15_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t15_recode.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
+*** Table 16: Effect of the share of population aged 15 to 24 on democratic improvements ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+tsset ccode year
+
+drop if year<1940
+tsset ccode year
+
+eststo t2_1: xi: xtreg transD77 L_ratio_15_19_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t2_2: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t2_3: xi: xtreg transD77 L_ratio_15_19_t L_vargdppc   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t2_4: xi: xtreg transD77 L_ratio_15_19_t L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t2_5: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t2_6: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77 L_ln_poptotal L_ls_2 L_gini_disp L_urb_harm L_indust i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
 ******  Table 21: Effect of youth bulges on improvements in the Polyarchy index — Climatic variables interacted with the share of agriculture in GDP as instrument ******
 
 use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
