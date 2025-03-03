@@ -14,7 +14,6 @@ tsset ccode year
 global c_cov L_ln_gdppc L_vargdppc L_polityD77
 global n_cov L_ln_gdppc L_vargdppc L_polityD77 L_polityD77_neighbor
 
-
 *** Figure 6: 2SLS leave-one-out regression results ***
 
 use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
@@ -385,6 +384,119 @@ tw (scatter ar_pval rand, msize(small) mc(green%50) jitter(10)) ///
 graph export "C:\Users\Redha CHABA\Documents\wp_git\cdhm\plots\final_plots\appendix\f6_f_ar_iv3.jpg", width(4000) replace
 
 
+
+*** Figure 7: Effect of youth bulges on riots ( ln(1 + riots(t)) and asinh(riots(t)))— Decomposition by age groups ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+
+tsset ccode year
+drop if year<1940
+tsset ccode year
+
+eststo f7_1: xi: xtreg log1_domestic6 L.ratio_15_34_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo f7_2: xi: xtreg log1_domestic6 L.ratio_15_29_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo f7_3: xi: xtreg log1_domestic6 L.ratio_15_24_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo f7_4: xi: xtreg log1_domestic6 L.ratio_15_19_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+coefplot f7_1 f7_2 f7_3 f7_4, ///
+keep(L.ratio_15_34_t L.ratio_15_29_t L.ratio_15_24_t L.ratio_15_19_t) ///
+coeflabels(L.ratio_15_34_t = "Youth ratio (15 - 34)" ///
+         L.ratio_15_29_t = "Youth ratio (15 - 29)" ///
+         L.ratio_15_24_t = "Youth ratio (15 - 24)" ///
+         L.ratio_15_19_t = "Youth ratio (15 - 19)") ///
+  xline(0) ///
+  msymbol(circle) ///
+  mcolor(black) ///
+  ciopts(recast(rcap) lcolor(black)) ///
+  graphregion(color(white)) ///
+  grid(none) ///
+  xlabel(, grid) ///
+  plotregion(margin(l=15)) ///
+  title("") ///
+  horizontal ///
+  legend(off) ///
+  ylab(, labsize(small)) ///
+  scheme(s2color)
+  
+  
+graph export "C:\Users\Redha CHABA\Documents\wp_git\cdhm\plots\final_plots\appendix\f7_riots_a.jpg", width(4000) replace
+
+eststo f7_5: xi: xtreg log1_domestic6 L.ratio_15_19_t L.ratio_20_24_t  L.ratio_25_29_t  L.ratio_30_34_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+coefplot f7_5, ///
+keep(L.ratio_15_19_t L.ratio_20_24_t  L.ratio_25_29_t  L.ratio_30_34_t) ///
+coeflabels(L.ratio_15_19_t = "Youth ratio (15 - 19)" ///
+         L.ratio_20_24_t = "Youth ratio (20 - 24)" ///
+         L.ratio_25_29_t = "Youth ratio (25 - 29)" ///
+         L.ratio_30_34_t = "Youth ratio (30 - 34)") ///
+  xline(0) ///
+  msymbol(circle) ///
+  mcolor(black) ///
+  ciopts(recast(rcap) lcolor(black)) ///
+  graphregion(color(white)) ///
+  grid(none) ///
+  xlabel(, grid) ///
+  plotregion(margin(l=15)) ///
+  title("") ///
+  horizontal ///
+  legend(off) ///
+  ylab(, labsize(small)) ///
+  scheme(s2color)
+  
+  
+graph export "C:\Users\Redha CHABA\Documents\wp_git\cdhm\plots\final_plots\appendix\f7_riots_b.jpg", width(4000) replace
+
+eststo f7_6: xi: xtreg ln2_domestic6 L.ratio_15_34_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo f7_7: xi: xtreg ln2_domestic6 L.ratio_15_29_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo f7_8: xi: xtreg ln2_domestic6 L.ratio_15_24_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo f7_9: xi: xtreg ln2_domestic6 L.ratio_15_19_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+coefplot f7_6 f7_7 f7_8 f7_9, ///
+keep(L.ratio_15_34_t L.ratio_15_29_t L.ratio_15_24_t L.ratio_15_19_t) ///
+coeflabels(L.ratio_15_34_t = "Youth ratio (15 - 34)" ///
+         L.ratio_15_29_t = "Youth ratio (15 - 29)" ///
+         L.ratio_15_24_t = "Youth ratio (15 - 24)" ///
+         L.ratio_15_19_t = "Youth ratio (15 - 19)") ///
+  xline(0) ///
+  msymbol(circle) ///
+  mcolor(black) ///
+  ciopts(recast(rcap) lcolor(black)) ///
+  graphregion(color(white)) ///
+  grid(none) ///
+  xlabel(, grid) ///
+  plotregion(margin(l=15)) ///
+  title("") ///
+  horizontal ///
+  legend(off) ///
+  ylab(, labsize(small)) ///
+  scheme(s2color)
+          
+graph export "C:\Users\Redha CHABA\Documents\wp_git\cdhm\plots\final_plots\appendix\f7_riots_c.jpg", width(4000) replace
+
+eststo f7_10: xi: xtreg ln2_domestic6 L.ratio_15_19_t L.ratio_20_24_t  L.ratio_25_29_t  L.ratio_30_34_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+
+coefplot f7_10, ///
+keep(L.ratio_15_19_t L.ratio_20_24_t  L.ratio_25_29_t  L.ratio_30_34_t) ///
+coeflabels(L.ratio_15_19_t = "Youth ratio (15 - 19)" ///
+         L.ratio_20_24_t = "Youth ratio (20 - 24)" ///
+         L.ratio_25_29_t = "Youth ratio (25 - 29)" ///
+         L.ratio_30_34_t = "Youth ratio (30 - 34)") ///
+  xline(0) ///
+  msymbol(circle) ///
+  mcolor(black) ///
+  ciopts(recast(rcap) lcolor(black)) ///
+  graphregion(color(white)) ///
+  grid(none) ///
+  xlabel(, grid) ///
+  plotregion(margin(l=15)) ///
+  title("") ///
+  horizontal ///
+  legend(off) ///
+  ylab(, labsize(small)) ///
+  scheme(s2color)
+  
+  
+graph export "C:\Users\Redha CHABA\Documents\wp_git\cdhm\plots\final_plots\appendix\f7_riots_d.jpg", width(4000) replace
 
 *** Figure 8: Sensitivity of the effect of Peak window to changes in window size ***
 
