@@ -91,8 +91,8 @@ estout t10_iv1 t10_iv2 t10_iv3 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm
 *** Table 11: Effect of output contractions on democratic improvements — Interactions with the Youth ratio ***
 
 use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
-tsset ccode year
 
+tsset ccode year
 drop if year<1940
 tsset ccode year
 
@@ -127,11 +127,39 @@ estout t12_lr_1_a t12_lr_2_a t12_lr_3_a using "C:\Users\Redha CHABA\Documents\wp
 
 estout t12_lr_1_b t12_lr_2_b t12_lr_3_b using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t12_lr_sub_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
+*** Table 13: Effect of youth bulges on riots — Lagged fertility as instrument ***
+
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+
+tsset ccode year
+drop if year<1940
+tsset ccode year
+
+eststo t13_ols_1_a: xi: xtreg log1_domestic6 L16_netfertility5 i.year, fe cluster(ccode)
+eststo t13_ols_2_a: xi: xtreg log1_domestic6 L16_netfertility5 $c_cov i.year, fe cluster(ccode)
+eststo t13_ss_1_a: xi: xtivreg2 log1_domestic6 (L_ratio_15_19_t = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo t13_ss_2_a: xi: xtivreg2 log1_domestic6 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
+
+eststo t13_ols_3_a: xi: xtreg ln2_domestic6 L16_netfertility5 i.year, fe cluster(ccode)
+eststo t13_ols_4_a: xi: xtreg ln2_domestic6 L16_netfertility5 $c_cov i.year, fe cluster(ccode)
+eststo t13_ss_3_a: xi: xtivreg2 ln2_domestic6 (L_ratio_15_19_t = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo t13_ss_4_a: xi: xtivreg2 ln2_domestic6 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year if inrange(year, 1950, 2018), fe  cluster(ccode)
+
+eststo t13_fs_1_b: xi: xtreg L_ratio_15_19_t L16_netfertility5 i.year, fe cluster(ccode)
+eststo t13_fs_2_b: xi: xtreg L_ratio_15_19_t L16_netfertility5 $c_cov i.year, fe cluster(ccode)
+
+eststo t13_fs_3_b: xi: xtreg L_ratio_15_19_t L16_netfertility5 i.year, fe cluster(ccode)
+eststo t13_fs_4_b: xi: xtreg L_ratio_15_19_t L16_netfertility5 $c_cov i.year, fe cluster(ccode)
+
+estout t13_ols_1_a t13_ols_2_a t13_ss_1_a t13_ss_2_a t13_ols_3_a t13_ols_4_a t13_ss_3_a t13_ss_4_a using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t13_iv_riots_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*")
+
+estout t13_fs_1_b t13_fs_2_b t13_fs_3_b t13_fs_4_b using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t13_iv_riots_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
 ******  Table 21: Effect of youth bulges on improvements in the Polyarchy index — Climatic variables interacted with the share of agriculture in GDP as instrument ******
 
 use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
-tsset ccode year
 
+tsset ccode year
 drop if year<1940
 tsset ccode year
 
