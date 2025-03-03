@@ -105,8 +105,27 @@ eststo t11_4: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_neggrowth_3   L_yo
 eststo t11_5: xi: xtreg transD77 L_ratio_15_19_t  L_neggrowth_4   L_youth_rece_6    i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo t11_6: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_neggrowth_4   L_youth_rece_6 L_polityD77    i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
 
+estout t11_1 t11_2 t11_3 t11_4 t11_5 t11_6 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t11_rece.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
+*** Table 12: Effect of youth bulges on democratic improvements—Longer-run panel – Peak window sub-samples ***
 
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+
+tsset ccode year
+drop if year<1800
+tsset ccode year
+
+eststo t12_lr_1_a: xi: xtreg transD77 L_neggrowth_3 i.year if L15_fenetre_15_15==0, fe cluster(ccode)
+eststo t12_lr_2_a: xi: xtreg transD77 L_neggrowth_3 L_ln_gdppc L_polityD77 i.year if L15_fenetre_15_15==0, fe cluster(ccode)
+eststo t12_lr_3_a: xi: xtreg transD77 L_neggrowth_3 L_ln_gdppc L_polityD77 L_indust L_urb_harm  i.year if L15_fenetre_15_15==0, fe cluster(ccode)
+
+eststo t12_lr_1_b: xi: xtreg transD77 L_neggrowth_3 i.year if L15_fenetre_15_15==1, fe cluster(ccode)
+eststo t12_lr_2_b: xi: xtreg transD77 L_neggrowth_3 L_ln_gdppc L_polityD77 i.year if L15_fenetre_15_15==1, fe cluster(ccode)
+eststo t12_lr_3_b: xi: xtreg transD77 L_neggrowth_3 L_ln_gdppc L_polityD77 L_indust L_urb_harm  i.year if L15_fenetre_15_15==1, fe cluster(ccode)
+
+estout t12_lr_1_a t12_lr_2_a t12_lr_3_a using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t12_lr_sub_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+estout t12_lr_1_b t12_lr_2_b t12_lr_3_b using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t12_lr_sub_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ******  Table 21: Effect of youth bulges on improvements in the Polyarchy index — Climatic variables interacted with the share of agriculture in GDP as instrument ******
 
