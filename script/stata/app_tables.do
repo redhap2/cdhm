@@ -673,9 +673,9 @@ tsset ccode year
 eststo t26_1: xi: xtreg transD77 L_netfertility5 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 eststo t26_2: xi: xtreg transD77 L5_netfertility5 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 eststo t26_3: xi: xtreg transD77 L10_netfertility5 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo t26_4: xi: xtreg transD77 L15_netfertility5 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t26_4: xi: xtreg transD77 L16_netfertility5 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 eststo t26_5: xi: xtreg transD77 L20_netfertility5 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo t26_6: xi: xtreg transD77 L_netfertility5 L5_netfertility5 L10_netfertility5 L15_netfertility5 L20_netfertility5 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t26_6: xi: xtreg transD77 L_netfertility5 L5_netfertility5 L10_netfertility5 L16_netfertility5 L20_netfertility5 L_ln_gdppc L_vargdppc L_polityD77   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 
 estout t26_1 t26_2 t26_3 t26_4 t26_5 t26_6 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t26_fertility_var.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
@@ -697,3 +697,20 @@ eststo t27_7: xi: xtreg transD77 L_ratio_m_t L_ln_gdppc L_vargdppc L_polityD77  
 eststo t27_8: xi: xtreg transD77 L_ratio_m_t L_ln_gdppc L_vargdppc L_polityD77 L_ln_poptotal L_ls_2 L_gini_disp L_urb_harm L_indust i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 
 estout t27_1 t27_2 t27_3 t27_4 t27_5 t27_6 t27_7 t27_8 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t27_male.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+
+
+
+eststo TA11: xi: xtreg transD773 L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo TA12: xi: xtreg transD773 L15.netfertility  L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)		
+eststo TA13: xi: xtivreg2 transD773 (L.ratio_15_19_t = L15.netfertility) L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+
+eststo TA14: xi: xtreg transitionD77 L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo TA15: xi: xtreg transitionD77 L15.netfertility L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo TA16: xi: xtivreg2 transitionD77 (L.ratio_15_19_t = L15.netfertility) L.ln_gdppc L.vargdppc L.polityD77    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+
+eststo TA20: xi: xtreg transML L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo TA21: xi: xtreg transML L15.netfertility L.ln_gdppc L.vargdppc L.polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo TA22: xi: xtivreg2 transML (L.ratio_15_19_t = L15.netfertility) L.ln_gdppc L.vargdppc L.polityD77    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+
+
+
