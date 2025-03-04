@@ -762,31 +762,31 @@ tsset ccode year
 **** ln(riots(t-1)) Instrument ****
 
 * Col 1, OLS (covariates)
-eststo t30_iv1_ols: xi: xtreg transD77 L_log1_domestic6 $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t30_iv1_ols: xi: xtreg negtransD77 L_log1_domestic6 $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 
 *** Second Stage Regressions ***
 
 * Col 2, IV (no covariates)
-eststo t30_iv1_ss_1: xi: xtivreg2 transD77 (L_log1_domestic6 = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t30_iv1_ss_1: xi: xtivreg2 negtransD77 (L_log1_domestic6 = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 * Col 3, IV (covariates)
-eststo t30_iv1_ss_2: xi: xtivreg2 transD77 (L_log1_domestic6 = L16_netfertility5) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t30_iv1_ss_2: xi: xtivreg2 negtransD77 (L_log1_domestic6 = L16_netfertility5) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 **** asinh(riots(t-1)) Instrument ****
 
 * Col 4, OLS (covariates)
-eststo t30_iv2_ols: xi: xtreg transD77 L_ln2_domestic6 $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t30_iv2_ols: xi: xtreg negtransD77 L_ln2_domestic6 $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 
 *** Second Stage Regressions ***
 
 * Col 5, IV (no covariates)
-eststo t30_iv2_ss_1: xi: xtivreg2 transD77 (L_ln2_domestic6 = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t30_iv2_ss_1: xi: xtivreg2 negtransD77 (L_ln2_domestic6 = L16_netfertility5) i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 * Col 6, IV (covariates)
-eststo t30_iv2_ss_2: xi: xtivreg2 transD77 (L_ln2_domestic6 = L16_netfertility5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t30_iv2_ss_2: xi: xtivreg2 negtransD77 (L_ln2_domestic6 = L16_netfertility5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 ***** Panel B: First Stage Results Regressions *****
@@ -794,18 +794,18 @@ estadd scalar kp_fstat = e(rkf)
 **** ln(riots(t-1)) Instrument ****
 
 * Col 2, First Stage (no covariates)
-eststo t30_iv1_fs_1: xi: xtreg L_log1_domestic6 L16_netfertility5 i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+eststo t30_iv1_fs_1: xi: xtreg L_log1_domestic6 L16_netfertility5 i.year if inrange(year, 1950, 2018) & negtransD77 != ., fe cluster(ccode)
 
 * Col 3, First Stage (covariates)
-eststo t30_iv1_fs_2: xi: xtreg L_log1_domestic6 L16_netfertility5 $c_cov i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+eststo t30_iv1_fs_2: xi: xtreg L_log1_domestic6 L16_netfertility5 $c_cov i.year if inrange(year, 1950, 2018) & negtransD77 != ., fe cluster(ccode)
 
 **** asinh(riots(t-1)) Instrument ****
 
 * Col 4, First Stage (no covariates)
-eststo t30_iv2_fs_1: xi: xtreg L_ln2_domestic6 L16_netfertility5 i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+eststo t30_iv2_fs_1: xi: xtreg L_ln2_domestic6 L16_netfertility5 i.year if inrange(year, 1950, 2018) & negtransD77 != ., fe cluster(ccode)
 
 * Col 5, First Stage (covariates)
-eststo t30_iv2_fs_2: xi: xtreg L_ln2_domestic6 L16_netfertility5 $c_cov i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+eststo t30_iv2_fs_2: xi: xtreg L_ln2_domestic6 L16_netfertility5 $c_cov i.year if inrange(year, 1950, 2018) & negtransD77 != ., fe cluster(ccode)
 
 ***** Export Tables *****
 
