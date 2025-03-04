@@ -56,7 +56,7 @@ eststo t9_iv2_fs_2: xi: xtreg L_ratio_15_19_t L22_netfertility_neighbor5 $n_cov 
 eststo t9_iv3_fs_1: xi :xtreg L_ratio_15_19_t L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 eststo t9_iv3_fs_2: xi: xtreg L_ratio_15_19_t L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov L_transD77_neighbor i.year if inrange(year, 1950, 2018) & transD77!=., fe  cluster(ccode)
 
-estout t9_iv2_ss_1 t9_iv2_ss_2 t9_iv3_ss_1 t9_iv3_ss_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t9_iv2_iv3_neigh_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*")
+estout t9_iv2_ss_1 t9_iv2_ss_2 t9_iv3_ss_1 t9_iv3_ss_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t9_iv2_iv3_neigh_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*")
 
 estout t9_iv2_fs_1 t9_iv2_fs_2 t9_iv3_fs_1 t9_iv3_fs_2 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t9_iv2_iv3_neigh_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
@@ -86,7 +86,7 @@ tsset ccode year
 	weakiv
 	* p-value: 0.0222 | Conf. level: 95% | Conf. Set: [ .748427, 8.37267]  
 
-estout t10_iv1 t10_iv2 t10_iv3 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t10_ar_iv.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*")
+estout t10_iv1 t10_iv2 t10_iv3 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t10_ar_iv.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*")
 
 *** Table 11: Effect of output contractions on democratic improvements — Interactions with the Youth ratio ***
 
@@ -157,7 +157,7 @@ eststo t13_fs_2_b: xi: xtreg L_ratio_15_19_t L16_netfertility5 $c_cov i.year, fe
 eststo t13_fs_3_b: xi: xtreg L_ratio_15_19_t L16_netfertility5 i.year, fe cluster(ccode)
 eststo t13_fs_4_b: xi: xtreg L_ratio_15_19_t L16_netfertility5 $c_cov i.year, fe cluster(ccode)
 
-estout t13_ols_1_a t13_ols_2_a t13_ss_1_a t13_ss_2_a t13_ols_3_a t13_ols_4_a t13_ss_3_a t13_ss_4_a using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t13_iv_riots_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*")
+estout t13_ols_1_a t13_ols_2_a t13_ss_1_a t13_ss_2_a t13_ols_3_a t13_ols_4_a t13_ss_3_a t13_ss_4_a using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t13_iv_riots_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*")
 
 estout t13_fs_1_b t13_fs_2_b t13_fs_3_b t13_fs_4_b using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t13_iv_riots_b.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
@@ -582,7 +582,7 @@ eststo t21_iv3_fs_4: xi: xtreg L16_netfertility5 L17_mean5_spei12_agr2_2 L17_mea
 
 ** Panel A: Reduced Form & Second Stage Results Table **
 
-estout t21_iv3_ols_1 t21_iv3_ols_2 t21_iv3_ss_1 t21_iv3_ss_2 t21_iv3_ss_3 t21_iv3_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t21_iv3_vdem_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t21_iv3_ols_1 t21_iv3_ols_2 t21_iv3_ss_1 t21_iv3_ss_2 t21_iv3_ss_3 t21_iv3_ss_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t21_iv3_vdem_a.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 ** Panel B: First Stage Results Table **
 
@@ -722,7 +722,7 @@ eststo t28_8: xi: xtreg transML L16_netfertility5 L_ln_gdppc L_vargdppc L_C_MLDI
 eststo t28_9: xi: xtivreg2 transML (L_ratio_15_19_t = L16_netfertility5) L_ln_gdppc L_vargdppc L_C_MLDI    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
-estout t28_1 t28_2 t28_3 t28_4 t28_5 t28_6 t28_7 t28_8 t28_9 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t28_pol_trans.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t28_1 t28_2 t28_3 t28_4 t28_5 t28_6 t28_7 t28_8 t28_9 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t28_pol_trans.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 *** Table 29: Effect of youth bulges on revolution and democratic reversal ***
 
@@ -747,7 +747,7 @@ eststo t29_8: xi: xtreg negtransD77 L16_netfertility5  L_ln_gdppc L_vargdppc L_p
 eststo t29_9: xi: xtivreg2 negtransD77 (L_ratio_15_19_t = L16_netfertility5) L_ln_gdppc L_vargdppc L_polityD77     i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
-estout t29_1 t29_2 t29_3 t29_4 t29_5 t29_6 t29_7 t29_8 t29_9 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t29_reversal.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excL_ IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout t29_1 t29_2 t29_3 t29_4 t29_5 t29_6 t29_7 t29_8 t29_9 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t29_reversal.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
 *** Table 30: Effect of riots driven by a high youth ratio on democratic reversals — Lagged fertility as instrument ***
 
