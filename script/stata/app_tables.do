@@ -802,10 +802,10 @@ eststo t30_iv1_fs_2: xi: xtreg L_log1_domestic6 L16_netfertility5 $c_cov i.year 
 **** asinh(riots(t-1)) Instrument ****
 
 * Col 4, First Stage (no covariates)
-eststo t30_iv2_fs_1: xi: xtreg L_ln2_domestic6 L21_netfertility_neighbor5 i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+eststo t30_iv2_fs_1: xi: xtreg L_ln2_domestic6 L16_netfertility5 i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
 
 * Col 5, First Stage (covariates)
-eststo t30_iv2_fs_2: xi: xtreg L_ln2_domestic6 L21_netfertility_neighbor5 $n_cov i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
+eststo t30_iv2_fs_2: xi: xtreg L_ln2_domestic6 L16_netfertility5 $c_cov i.year if inrange(year, 1950, 2018) & transD77 != ., fe cluster(ccode)
 
 ***** Export Tables *****
 
