@@ -22,7 +22,7 @@ tsset ccode year
 drop if year<1940
 tsset ccode year
 
-summarize transD77 ratio_15_19_t ratio_20_24_t ratio_25_29_t ratio_30_34_t ratio_15_34_t ln_gdppc vargdppc polityD77 if year >1950 & transD77 !=.
+summarize transD77 ratio_15_19_t ratio_15_24_t ratio_15_29_t ratio_15_34_t ln_gdppc vargdppc polityD77 if year >1950 & transD77 !=.
 
 *** Table 2: Effect of youth bulges on democratic improvements — Regression with controls ***
 

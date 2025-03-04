@@ -852,44 +852,41 @@ estout t32_1 t32_2 t32_3 t32_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm
 *** Table 33: Time varying fixed effects ***
 
 use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
-tsset ccode year
 
-drop if year<1940
 tsset ccode year
+drop if year<1940
+drop if ccode_ts16==.
 
 tsset ccode_ts16 year
 
-eststo T21TS16: xi: xtreg transD77 L.ratio_15_19_t i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts16)
-eststo T29TS16: xi: xtreg transD77 L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts16)	
+eststo t33_1: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts16)	
 
-eststo T29TS16: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts16)	
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
 
-
-estout T21TS16 T29TS16, style(tex) varlabels(_cons constant ) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(0 3)) margin legend indicate("Year effects=_Iyear_*" )
-
+tsset ccode year
+drop if year<1940
+drop if ccode_ts22==.
 
 tsset ccode_ts22 year
 
-eststo T21TS22: xi: xtreg transD77 L.ratio_15_19_t i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts22)
-eststo T29TS22: xi: xtreg transD77 L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts22)	
+eststo t33_2: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts22)	
 
-estout T21TS22 T29TS22, style(tex) varlabels(_cons constant ) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(0 3)) margin legend indicate("Year effects=_Iyear_*" )
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
+
+tsset ccode year
+drop if year<1940
+drop if ccode_ts33==.
 
 tsset ccode_ts33 year
 
-eststo T21TS33: xi: xtreg transD77 L.ratio_15_19_t i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts33)
-eststo T29TS33: xi: xtreg transD77 L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts33)	
+eststo t33_3: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode_ts33)	
 
-estout T21TS33 T29TS33, style(tex) varlabels(_cons constant ) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(0 3)) margin legend indicate("Year effects=_Iyear_*" )
-
-tsset ccode year
-
-eststo T21TSCU: xi: xtreg transD77 L.ratio_15_19_t c.year#i.ccode if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo T29TSCU: xi: xtreg transD77 L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77  c.year#i.ccode if inrange(year, 1950, 2018), fe cluster(ccode)	
-
-estout T21TSCU T29TSCU, style(tex) varlabels(_cons constant ) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(0 3)) margin legend indicate("Year effects=_Iyear_*" )
+use "${mypath}\working_paper\cdhm\data\data_dta\data_final.dta", clear
 
 tsset ccode year
+drop if year<1940
+tsset ccode year
 
-eststo T21TSCUY: xi: xtreg transD77 L.ratio_15_19_t i.year c.year#i.ccode if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo T29TSCUY: xi: xtreg transD77 L.ratio_15_19_t L.ln_gdppc L.vargdppc L.polityD77  i.year c.year#i.ccode if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t33_4: xi: xtreg transD77 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year c.year#i.ccode if inrange(year, 1950, 2018), fe cluster(ccode)
+
+estout t33_1 t33_2 t33_3 t33_4 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t33_fe_var.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
