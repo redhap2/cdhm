@@ -404,9 +404,9 @@ tsset ccode year
 eststo t19_1: xi: xtreg vdem_trans_2 L_ratio_15_19_t i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 eststo t19_2: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_ln_gdppc  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 eststo t19_3: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_vargdppc   i.year if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo t19_4: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo t19_5: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77  i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo t19_6: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_polityD77 L_ln_poptotal L_ls_2 L_gini_disp L_urb_harm L_indust i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t19_4: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_v2x_polyarchy  i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo t19_5: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_v2x_polyarchy  i.year if inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo t19_6: xi: xtreg vdem_trans_2 L_ratio_15_19_t L_ln_gdppc L_vargdppc L_v2x_polyarchy L_ln_poptotal L_ls_2 L_gini_disp L_urb_harm L_indust i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 
 estout t19_1 t19_2 t19_3 t19_4 t19_5 t19_6 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\final_tables\appendix\t19_vdem_ols.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 
