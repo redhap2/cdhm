@@ -734,7 +734,7 @@ tsset ccode year
 
 eststo t29_1: xi: xtreg log1_domestic7 ratio_15_19_t ln_gdppc vargdppc polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo t29_2: xi: xtreg log1_domestic7 L15_netfertility5 ln_gdppc vargdppc polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo t29_3: xi: xtivreg2 log1_domestic7 (L_ratio_15_19_t = L16_netfertility5) L_ln_gdppc L_vargdppc L_log1_domestic7    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo t29_3: xi: xtivreg2 log1_domestic7 (ratio_15_19_t = L15_netfertility5) L_ln_gdppc L_vargdppc L_log1_domestic7    i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 eststo t29_4: xi: xtreg ln2_domestic7 ratio_15_19_t ln_gdppc vargdppc polityD77     i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
