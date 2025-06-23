@@ -1,0 +1,13 @@
+\contentsline {section}{\numberline {1}Regressions}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Polity}{2}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}Baseline Results}{2}{subsubsection.1.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.2}Drop Polity $\ge $ 8 -- 32.2\% Obs. Dropped}{7}{subsubsection.1.1.2}%
+\contentsline {subsubsection}{\numberline {1.1.3}Drop Polity $\ge $ 9 -- 25.1\% Obs. Dropped}{12}{subsubsection.1.1.3}%
+\contentsline {subsubsection}{\numberline {1.1.4}Drop Polity = 10 -- 19.1\% Obs. Dropped}{17}{subsubsection.1.1.4}%
+\contentsline {subsection}{\numberline {1.2}V-Dem Polyarchy}{22}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Baseline results}{22}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Drop Polyarchy $\ge $ 0.75 -- 20.2\% Obs. Dropped}{27}{subsubsection.1.2.2}%
+\contentsline {subsubsection}{\numberline {1.2.3}Drop Polyarchy $\ge $ 0.8 -- 16.0\% Obs. Dropped}{32}{subsubsection.1.2.3}%
+\contentsline {subsubsection}{\numberline {1.2.4}Drop Polyarchy $\ge $ 0.85 -- 10.4\% Obs. Dropped}{37}{subsubsection.1.2.4}%
+\contentsline {subsubsection}{\numberline {1.2.5}Drop Polyarchy $\ge $ 0.9 -- 1.7\% Obs. Dropped}{42}{subsubsection.1.2.5}%
+\contentsline {section}{Descriptive Statistics}{47}{section*.47}%

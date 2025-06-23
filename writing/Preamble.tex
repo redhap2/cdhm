@@ -1,0 +1,198 @@
+%l !Rnw weave = knitr
+
+%% ===== Document Encoding and Fonts =====
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{crimson}
+
+%% ===== Page Layout =====
+\usepackage{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\usepackage{setspace}
+
+%% ===== Graphics and Colors =====
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{epstopdf}
+\usepackage{rotating}
+
+% Image handling rules
+\epstopdfDeclareGraphicsRule{.tif}{png}{.png}{convert #1 \OutputFile}
+\AppendGraphicsExtensions{.tif}
+
+% Maxwidth for images
+\makeatletter
+\def\maxwidth{%
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+% Float settings
+\usepackage{float}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+%% ===== Math Packages =====
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\setcounter{MaxMatrixCols}{10}
+\newcommand{\Expect}{{\rm I\kern-.3em E}} % Expectation operator
+
+%% ===== Tables and Figures =====
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{threeparttable}
+\usepackage{tabulary}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+%% ===== Links and URLs =====
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    breaklinks=true,
+    allcolors=[RGB]{128,0,0}
+}
+
+%% ===== Bibliography =====
+\usepackage{natbib}
+
+%% ===== Miscellaneous Packages =====
+\usepackage{seqsplit}
+\usepackage{soul}
+\usepackage{bbding} % checkmark symbol
+\usepackage{comment}
+\usepackage{alltt}
+
+%% ===== Code Highlighting =====
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+%% ===== Knitr Environment =====
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+%% ===== Custom Footnote Handling =====
+\let\oldFootnote\footnote
+\newcommand\nextToken\relax
+
+\renewcommand\footnote[1]{%
+    \oldFootnote{#1}\futurelet\nextToken\isFootnote}
+
+\newcommand\isFootnote{%
+    \ifx\footnote\nextToken\textsuperscript{,}\fi}
+
+%% ===== Theorem-like Environments =====
+\theoremstyle{plain}
+\newtheorem{thm}{\protect\theoremname}
+\newtheorem{prop}{\protect\propositionname}
+\newtheorem{theorem}{{Theorem}}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{prediction}{Prediction}
+\newtheorem{open_question}{Open question}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{claim}[theorem]{{Claim}}
+\newtheorem{example}[theorem]{{Example}}
+\newtheorem{corollary}[theorem]{{Corollary}}
+\newtheorem{remark}[theorem]{{Remark}}
+\newtheorem{assumptions}[theorem]{{Assumptions}}
+\newtheorem*{thm1star}{{Theorem $\mathbf{1^*}$}}
+\newtheorem*{thm2star}{{Theorem $\mathbf{2^*}$}}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{lemma*}{Lemma}
+
+%% ===== Hypothesis Environments =====
+\newtheorem{hyp}{Hypothesis}
+\makeatletter
+\newcounter{subhyp}
+\let\savedc@hyp\c@hyp
+\newenvironment{subhyp}
+ {%
+  \setcounter{subhyp}{0}%
+  \stepcounter{hyp}%
+  \edef\saved@hyp{\thehyp}% Save the current value of hyp
+  \let\c@hyp\c@subhyp     % Now hyp is subhyp
+  \renewcommand{\thehyp}{\saved@hyp\alph{hyp}}%
+ }
+ {}
+\newcommand{\normhyp}{%
+  \let\c@hyp\savedc@hyp % revert to the old one
+  \renewcommand\thehyp{\arabic{hyp}}%
+}
+\makeatother
+
+%% ===== Custom Macros =====
+\providecommand{\examplename}{Example}
+\providecommand{\propositionname}{Proposition}
+\providecommand{\theoremname}{Theorem}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bb}{\begin{block}}
+\newcommand{\eb}{\end{block}}
+\newcommand{\bmath}{\begin{eqnarray}}
+\newcommand{\emath}{\end{eqnarray}}
+\newcommand{\bmathnn}{\begin{eqnarray*}}
+\newcommand{\emathnn}{\end{eqnarray*}}
+
+%% ===== Statistical Significance Markers =====
+\newcommand*{\SuperScriptSameStyle}[1]{%
+  \ensuremath{%
+    \mathchoice
+      {{}^{\displaystyle #1}}%
+      {{}^{\textstyle #1}}%
+      {{}^{\scriptstyle #1}}%
+      {{}^{\scriptscriptstyle #1}}%
+  }%
+}
+
+\newcommand*{\oneS}{\SuperScriptSameStyle{*}}
+\newcommand*{\twoS}{\SuperScriptSameStyle{**}}
+\newcommand*{\threeS}{\SuperScriptSameStyle{*{*}*}}
+\newcommand{\vh}[1]{\textcolor{red}{(VH: #1)}}
+
+%% ===== Other Settings =====
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
+\usetikzlibrary{arrows.meta, positioning, fit, backgrounds, calc, shapes.geometric, decorations.pathmorphing}
