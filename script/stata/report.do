@@ -423,10 +423,20 @@ drop if year<1940
 gen vdem_trans_3=1 if D.v2x_polyarchy>=0.03 & D.v2x_polyarchy!=.
 replace vdem_trans_3=0 if D.v2x_polyarchy<0.03 & D.v2x_polyarchy!=.
 
+gen vdem_transplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+replace vdem_transplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
 gen vdem_transcont = D.v2x_polyarchy
 
-gen vdem_transcontplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+gen vdem_transcontplus= D.v2x_polyarchy if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
 replace vdem_transcontplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
+gen vdem_transcont005= D.v2x_polyarchy if D.v2x_polyarchy>=0.05 & D.v2x_polyarchy!=.
+replace vdem_transcont005=0 if D.v2x_polyarchy<0.05 & D.v2x_polyarchy!=.
+
+gen vdem_transcont0025= D.v2x_polyarchy if D.v2x_polyarchy>=0.025 & D.v2x_polyarchy!=.
+replace vdem_transcont0025=0 if D.v2x_polyarchy<0.025 & D.v2x_polyarchy!=.
+
 
 tsset ccode year
 
@@ -476,6 +486,22 @@ noisily{
 estout b_trans01_1 b_trans01_2 b_trans01_3 b_trans01_4 b_trans01_5 b_trans01_6 b_trans01_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\b_trans01.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
  
+
+eststo b_transplus_1: xi: xtreg vdem_transplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo b_transplus_2: xi: xtreg vdem_transplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo b_transplus_3: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo b_transplus_4: xi: xtreg vdem_transplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transplus_5: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo b_transplus_6: xi: xtreg vdem_transplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transplus_7: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout b_transplus_1 b_transplus_2 b_transplus_3 b_transplus_4 b_transplus_5 b_transplus_6 b_transplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\b_transplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
 eststo b_cont_1: xi: xtreg vdem_transcont L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo b_cont_2: xi: xtreg vdem_transcont L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo b_cont_3: xi: xtivreg2 vdem_transcont (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
@@ -491,22 +517,51 @@ noisily{
 estout b_cont_1 b_cont_2 b_cont_3 b_cont_4 b_cont_5 b_cont_6 b_cont_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\b_cont.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
 
-
-eststo b_contplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo b_contplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo b_contplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo b_transcontplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo b_transcontplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo b_transcontplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo b_contplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo b_contplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transcontplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transcontplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo b_contplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo b_contplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transcontplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transcontplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
-estout b_contplus_1 b_contplus_2 b_contplus_3 b_contplus_4 b_contplus_5 b_contplus_6 b_contplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\b_contplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout b_transcontplus_1 b_transcontplus_2 b_transcontplus_3 b_transcontplus_4 b_transcontplus_5 b_transcontplus_6 b_transcontplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\b_transcontplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
 
+
+eststo b_transcont005_1: xi: xtreg vdem_transcont005 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo b_transcont005_2: xi: xtreg vdem_transcont005 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo b_transcont005_3: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo b_transcont005_4: xi: xtreg vdem_transcont005 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transcont005_5: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo b_transcont005_6: xi: xtreg vdem_transcont005 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transcont005_7: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout b_transcont005_1 b_transcont005_2 b_transcont005_3 b_transcont005_4 b_transcont005_5 b_transcont005_6 b_transcont005_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\b_transcont005.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
+eststo b_transcont0025_1: xi: xtreg vdem_transcont0025 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo b_transcont0025_2: xi: xtreg vdem_transcont0025 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo b_transcont0025_3: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo b_transcont0025_4: xi: xtreg vdem_transcont0025 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transcont0025_5: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo b_transcont0025_6: xi: xtreg vdem_transcont0025 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo b_transcont0025_7: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout b_transcont0025_1 b_transcont0025_2 b_transcont0025_3 b_transcont0025_4 b_transcont0025_5 b_transcont0025_6 b_transcont0025_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\b_transcont0025.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
 
 ***remove if v2x_polyarchy>=0.75
 
@@ -518,10 +573,19 @@ drop if year<1940
 gen vdem_trans_3=1 if D.v2x_polyarchy>=0.03 & D.v2x_polyarchy!=.
 replace vdem_trans_3=0 if D.v2x_polyarchy<0.03 & D.v2x_polyarchy!=.
 
+gen vdem_transplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+replace vdem_transplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
 gen vdem_transcont = D.v2x_polyarchy
 
-gen vdem_transcontplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+gen vdem_transcontplus= D.v2x_polyarchy if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
 replace vdem_transcontplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
+gen vdem_transcont005= D.v2x_polyarchy if D.v2x_polyarchy>=0.05 & D.v2x_polyarchy!=.
+replace vdem_transcont005=0 if D.v2x_polyarchy<0.05 & D.v2x_polyarchy!=.
+
+gen vdem_transcont0025= D.v2x_polyarchy if D.v2x_polyarchy>=0.025 & D.v2x_polyarchy!=.
+replace vdem_transcont0025=0 if D.v2x_polyarchy<0.025 & D.v2x_polyarchy!=.
 
 drop if v2x_polyarchy>=0.75
 tsset ccode year
@@ -572,6 +636,22 @@ noisily{
 estout rm_075_trans01_1 rm_075_trans01_2 rm_075_trans01_3 rm_075_trans01_4 rm_075_trans01_5 rm_075_trans01_6 rm_075_trans01_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_075_trans01.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
  
+
+eststo rm_075_transplus_1: xi: xtreg vdem_transplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_075_transplus_2: xi: xtreg vdem_transplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_075_transplus_3: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_075_transplus_4: xi: xtreg vdem_transplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transplus_5: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_075_transplus_6: xi: xtreg vdem_transplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transplus_7: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_075_transplus_1 rm_075_transplus_2 rm_075_transplus_3 rm_075_transplus_4 rm_075_transplus_5 rm_075_transplus_6 rm_075_transplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_075_transplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
 eststo rm_075_cont_1: xi: xtreg vdem_transcont L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo rm_075_cont_2: xi: xtreg vdem_transcont L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo rm_075_cont_3: xi: xtivreg2 vdem_transcont (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
@@ -587,22 +667,51 @@ noisily{
 estout rm_075_cont_1 rm_075_cont_2 rm_075_cont_3 rm_075_cont_4 rm_075_cont_5 rm_075_cont_6 rm_075_cont_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_075_cont.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
 
-
-eststo rm_075_contplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo rm_075_contplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo rm_075_contplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo rm_075_transcontplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_075_transcontplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_075_transcontplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo rm_075_contplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo rm_075_contplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transcontplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transcontplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo rm_075_contplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo rm_075_contplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transcontplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transcontplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
-estout rm_075_contplus_1 rm_075_contplus_2 rm_075_contplus_3 rm_075_contplus_4 rm_075_contplus_5 rm_075_contplus_6 rm_075_contplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_075_contplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout rm_075_transcontplus_1 rm_075_transcontplus_2 rm_075_transcontplus_3 rm_075_transcontplus_4 rm_075_transcontplus_5 rm_075_transcontplus_6 rm_075_transcontplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_075_transcontplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
 
+
+eststo rm_075_transcont005_1: xi: xtreg vdem_transcont005 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_075_transcont005_2: xi: xtreg vdem_transcont005 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_075_transcont005_3: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_075_transcont005_4: xi: xtreg vdem_transcont005 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transcont005_5: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_075_transcont005_6: xi: xtreg vdem_transcont005 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transcont005_7: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_075_transcont005_1 rm_075_transcont005_2 rm_075_transcont005_3 rm_075_transcont005_4 rm_075_transcont005_5 rm_075_transcont005_6 rm_075_transcont005_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_075_transcont005.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
+eststo rm_075_transcont0025_1: xi: xtreg vdem_transcont0025 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_075_transcont0025_2: xi: xtreg vdem_transcont0025 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_075_transcont0025_3: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_075_transcont0025_4: xi: xtreg vdem_transcont0025 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transcont0025_5: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_075_transcont0025_6: xi: xtreg vdem_transcont0025 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_075_transcont0025_7: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_075_transcont0025_1 rm_075_transcont0025_2 rm_075_transcont0025_3 rm_075_transcont0025_4 rm_075_transcont0025_5 rm_075_transcont0025_6 rm_075_transcont0025_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_075_transcont0025.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
 
 ***remove if v2x_polyarchy>=0.8
 
@@ -614,10 +723,19 @@ drop if year<1940
 gen vdem_trans_3=1 if D.v2x_polyarchy>=0.03 & D.v2x_polyarchy!=.
 replace vdem_trans_3=0 if D.v2x_polyarchy<0.03 & D.v2x_polyarchy!=.
 
+gen vdem_transplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+replace vdem_transplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
 gen vdem_transcont = D.v2x_polyarchy
 
-gen vdem_transcontplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+gen vdem_transcontplus= D.v2x_polyarchy if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
 replace vdem_transcontplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
+gen vdem_transcont005= D.v2x_polyarchy if D.v2x_polyarchy>=0.05 & D.v2x_polyarchy!=.
+replace vdem_transcont005=0 if D.v2x_polyarchy<0.05 & D.v2x_polyarchy!=.
+
+gen vdem_transcont0025= D.v2x_polyarchy if D.v2x_polyarchy>=0.025 & D.v2x_polyarchy!=.
+replace vdem_transcont0025=0 if D.v2x_polyarchy<0.025 & D.v2x_polyarchy!=.
 
 drop if v2x_polyarchy>=0.8
 tsset ccode year
@@ -668,6 +786,22 @@ noisily{
 estout rm_08_trans01_1 rm_08_trans01_2 rm_08_trans01_3 rm_08_trans01_4 rm_08_trans01_5 rm_08_trans01_6 rm_08_trans01_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_08_trans01.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
  
+
+eststo rm_08_transplus_1: xi: xtreg vdem_transplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_08_transplus_2: xi: xtreg vdem_transplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_08_transplus_3: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_08_transplus_4: xi: xtreg vdem_transplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transplus_5: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_08_transplus_6: xi: xtreg vdem_transplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transplus_7: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_08_transplus_1 rm_08_transplus_2 rm_08_transplus_3 rm_08_transplus_4 rm_08_transplus_5 rm_08_transplus_6 rm_08_transplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_08_transplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
 eststo rm_08_cont_1: xi: xtreg vdem_transcont L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo rm_08_cont_2: xi: xtreg vdem_transcont L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo rm_08_cont_3: xi: xtivreg2 vdem_transcont (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
@@ -683,20 +817,50 @@ noisily{
 estout rm_08_cont_1 rm_08_cont_2 rm_08_cont_3 rm_08_cont_4 rm_08_cont_5 rm_08_cont_6 rm_08_cont_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_08_cont.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
 
-
-eststo rm_08_contplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo rm_08_contplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo rm_08_contplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo rm_08_transcontplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_08_transcontplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_08_transcontplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo rm_08_contplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo rm_08_contplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transcontplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transcontplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo rm_08_contplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo rm_08_contplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transcontplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transcontplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
-estout rm_08_contplus_1 rm_08_contplus_2 rm_08_contplus_3 rm_08_contplus_4 rm_08_contplus_5 rm_08_contplus_6 rm_08_contplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_08_contplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout rm_08_transcontplus_1 rm_08_transcontplus_2 rm_08_transcontplus_3 rm_08_transcontplus_4 rm_08_transcontplus_5 rm_08_transcontplus_6 rm_08_transcontplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_08_transcontplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
+
+eststo rm_08_transcont005_1: xi: xtreg vdem_transcont005 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_08_transcont005_2: xi: xtreg vdem_transcont005 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_08_transcont005_3: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_08_transcont005_4: xi: xtreg vdem_transcont005 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transcont005_5: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_08_transcont005_6: xi: xtreg vdem_transcont005 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transcont005_7: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_08_transcont005_1 rm_08_transcont005_2 rm_08_transcont005_3 rm_08_transcont005_4 rm_08_transcont005_5 rm_08_transcont005_6 rm_08_transcont005_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_08_transcont005.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
+eststo rm_08_transcont0025_1: xi: xtreg vdem_transcont0025 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_08_transcont0025_2: xi: xtreg vdem_transcont0025 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_08_transcont0025_3: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_08_transcont0025_4: xi: xtreg vdem_transcont0025 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transcont0025_5: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_08_transcont0025_6: xi: xtreg vdem_transcont0025 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_08_transcont0025_7: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_08_transcont0025_1 rm_08_transcont0025_2 rm_08_transcont0025_3 rm_08_transcont0025_4 rm_08_transcont0025_5 rm_08_transcont0025_6 rm_08_transcont0025_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_08_transcont0025.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
 
 ***remove if v2x_polyarchy>=0.85
@@ -709,10 +873,19 @@ drop if year<1940
 gen vdem_trans_3=1 if D.v2x_polyarchy>=0.03 & D.v2x_polyarchy!=.
 replace vdem_trans_3=0 if D.v2x_polyarchy<0.03 & D.v2x_polyarchy!=.
 
+gen vdem_transplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+replace vdem_transplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
 gen vdem_transcont = D.v2x_polyarchy
 
-gen vdem_transcontplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+gen vdem_transcontplus= D.v2x_polyarchy if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
 replace vdem_transcontplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
+gen vdem_transcont005= D.v2x_polyarchy if D.v2x_polyarchy>=0.05 & D.v2x_polyarchy!=.
+replace vdem_transcont005=0 if D.v2x_polyarchy<0.05 & D.v2x_polyarchy!=.
+
+gen vdem_transcont0025= D.v2x_polyarchy if D.v2x_polyarchy>=0.025 & D.v2x_polyarchy!=.
+replace vdem_transcont0025=0 if D.v2x_polyarchy<0.025 & D.v2x_polyarchy!=.
 
 drop if v2x_polyarchy>=0.85
 tsset ccode year
@@ -763,6 +936,22 @@ noisily{
 estout rm_085_trans01_1 rm_085_trans01_2 rm_085_trans01_3 rm_085_trans01_4 rm_085_trans01_5 rm_085_trans01_6 rm_085_trans01_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_085_trans01.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
  
+
+eststo rm_085_transplus_1: xi: xtreg vdem_transplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_085_transplus_2: xi: xtreg vdem_transplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_085_transplus_3: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_085_transplus_4: xi: xtreg vdem_transplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transplus_5: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_085_transplus_6: xi: xtreg vdem_transplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transplus_7: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_085_transplus_1 rm_085_transplus_2 rm_085_transplus_3 rm_085_transplus_4 rm_085_transplus_5 rm_085_transplus_6 rm_085_transplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_085_transplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
 eststo rm_085_cont_1: xi: xtreg vdem_transcont L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo rm_085_cont_2: xi: xtreg vdem_transcont L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo rm_085_cont_3: xi: xtivreg2 vdem_transcont (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
@@ -778,20 +967,50 @@ noisily{
 estout rm_085_cont_1 rm_085_cont_2 rm_085_cont_3 rm_085_cont_4 rm_085_cont_5 rm_085_cont_6 rm_085_cont_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_085_cont.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
 
-
-eststo rm_085_contplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo rm_085_contplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo rm_085_contplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo rm_085_transcontplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_085_transcontplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_085_transcontplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo rm_085_contplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo rm_085_contplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transcontplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transcontplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo rm_085_contplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo rm_085_contplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transcontplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transcontplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
-estout rm_085_contplus_1 rm_085_contplus_2 rm_085_contplus_3 rm_085_contplus_4 rm_085_contplus_5 rm_085_contplus_6 rm_085_contplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_085_contplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout rm_085_transcontplus_1 rm_085_transcontplus_2 rm_085_transcontplus_3 rm_085_transcontplus_4 rm_085_transcontplus_5 rm_085_transcontplus_6 rm_085_transcontplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_085_transcontplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
+
+eststo rm_085_transcont005_1: xi: xtreg vdem_transcont005 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_085_transcont005_2: xi: xtreg vdem_transcont005 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_085_transcont005_3: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_085_transcont005_4: xi: xtreg vdem_transcont005 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transcont005_5: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_085_transcont005_6: xi: xtreg vdem_transcont005 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transcont005_7: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_085_transcont005_1 rm_085_transcont005_2 rm_085_transcont005_3 rm_085_transcont005_4 rm_085_transcont005_5 rm_085_transcont005_6 rm_085_transcont005_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_085_transcont005.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
+eststo rm_085_transcont0025_1: xi: xtreg vdem_transcont0025 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_085_transcont0025_2: xi: xtreg vdem_transcont0025 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_085_transcont0025_3: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_085_transcont0025_4: xi: xtreg vdem_transcont0025 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transcont0025_5: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_085_transcont0025_6: xi: xtreg vdem_transcont0025 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_085_transcont0025_7: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_085_transcont0025_1 rm_085_transcont0025_2 rm_085_transcont0025_3 rm_085_transcont0025_4 rm_085_transcont0025_5 rm_085_transcont0025_6 rm_085_transcont0025_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_085_transcont0025.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
 
 ***remove if v2x_polyarchy>=0.9
@@ -804,10 +1023,19 @@ drop if year<1940
 gen vdem_trans_3=1 if D.v2x_polyarchy>=0.03 & D.v2x_polyarchy!=.
 replace vdem_trans_3=0 if D.v2x_polyarchy<0.03 & D.v2x_polyarchy!=.
 
+gen vdem_transplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+replace vdem_transplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
 gen vdem_transcont = D.v2x_polyarchy
 
-gen vdem_transcontplus=1 if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
+gen vdem_transcontplus= D.v2x_polyarchy if D.v2x_polyarchy>0 & D.v2x_polyarchy!=.
 replace vdem_transcontplus=0 if D.v2x_polyarchy<=0 & D.v2x_polyarchy!=.
+
+gen vdem_transcont005= D.v2x_polyarchy if D.v2x_polyarchy>=0.05 & D.v2x_polyarchy!=.
+replace vdem_transcont005=0 if D.v2x_polyarchy<0.05 & D.v2x_polyarchy!=.
+
+gen vdem_transcont0025= D.v2x_polyarchy if D.v2x_polyarchy>=0.025 & D.v2x_polyarchy!=.
+replace vdem_transcont0025=0 if D.v2x_polyarchy<0.025 & D.v2x_polyarchy!=.
 
 drop if v2x_polyarchy>=0.9
 tsset ccode year
@@ -857,6 +1085,22 @@ noisily{
 estout rm_09_trans01_1 rm_09_trans01_2 rm_09_trans01_3 rm_09_trans01_4 rm_09_trans01_5 rm_09_trans01_6 rm_09_trans01_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_09_trans01.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
  
+
+eststo rm_09_transplus_1: xi: xtreg vdem_transplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_09_transplus_2: xi: xtreg vdem_transplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_09_transplus_3: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_09_transplus_4: xi: xtreg vdem_transplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transplus_5: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_09_transplus_6: xi: xtreg vdem_transplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transplus_7: xi: xtivreg2 vdem_transplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_09_transplus_1 rm_09_transplus_2 rm_09_transplus_3 rm_09_transplus_4 rm_09_transplus_5 rm_09_transplus_6 rm_09_transplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_09_transplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
 eststo rm_09_cont_1: xi: xtreg vdem_transcont L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo rm_09_cont_2: xi: xtreg vdem_transcont L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo rm_09_cont_3: xi: xtivreg2 vdem_transcont (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
@@ -872,18 +1116,48 @@ noisily{
 estout rm_09_cont_1 rm_09_cont_2 rm_09_cont_3 rm_09_cont_4 rm_09_cont_5 rm_09_cont_6 rm_09_cont_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_09_cont.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
 
-
-eststo rm_09_contplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo rm_09_contplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
-eststo rm_09_contplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+eststo rm_09_transcontplus_1: xi: xtreg vdem_transcontplus L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_09_transcontplus_2: xi: xtreg vdem_transcontplus L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_09_transcontplus_3: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo rm_09_contplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo rm_09_contplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transcontplus_4: xi: xtreg vdem_transcontplus L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transcontplus_5: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
-eststo rm_09_contplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
-eststo rm_09_contplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transcontplus_6: xi: xtreg vdem_transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transcontplus_7: xi: xtivreg2 vdem_transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
-estout rm_09_contplus_1 rm_09_contplus_2 rm_09_contplus_3 rm_09_contplus_4 rm_09_contplus_5 rm_09_contplus_6 rm_09_contplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_09_contplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+estout rm_09_transcontplus_1 rm_09_transcontplus_2 rm_09_transcontplus_3 rm_09_transcontplus_4 rm_09_transcontplus_5 rm_09_transcontplus_6 rm_09_transcontplus_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_09_transcontplus.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
+
+eststo rm_09_transcont005_1: xi: xtreg vdem_transcont005 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_09_transcont005_2: xi: xtreg vdem_transcont005 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_09_transcont005_3: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_09_transcont005_4: xi: xtreg vdem_transcont005 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transcont005_5: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_09_transcont005_6: xi: xtreg vdem_transcont005 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transcont005_7: xi: xtivreg2 vdem_transcont005 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_09_transcont005_1 rm_09_transcont005_2 rm_09_transcont005_3 rm_09_transcont005_4 rm_09_transcont005_5 rm_09_transcont005_6 rm_09_transcont005_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_09_transcont005.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
+}
+
+eststo rm_09_transcont0025_1: xi: xtreg vdem_transcont0025 L_ratio_15_19_t $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_09_transcont0025_2: xi: xtreg vdem_transcont0025 L16_netfertility5 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
+eststo rm_09_transcont0025_3: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L16_netfertility5) $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_09_transcont0025_4: xi: xtreg vdem_transcont0025 L21_netfertility_neighbor5 $n_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transcont0025_5: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+eststo rm_09_transcont0025_6: xi: xtreg vdem_transcont0025 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov_vdem i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)
+eststo rm_09_transcont0025_7: xi: xtivreg2 vdem_transcont0025 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov_vdem i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+estadd scalar kp_fstat = e(rkf)
+
+noisily{
+estout rm_09_transcont0025_1 rm_09_transcont0025_2 rm_09_transcont0025_3 rm_09_transcont0025_4 rm_09_transcont0025_5 rm_09_transcont0025_6 rm_09_transcont0025_7 using "C:\Users\Redha CHABA\Documents\wp_git\cdhm\tables\report\democ_index\vdem\rm_09_transcont0025.tex", replace style(tex) cells(b(star fmt(3)) se(par fmt(2))) starlevels(* 0.10 ** 0.05 *** 0.01) stats(N N_g r2_w kp_fstat, fmt(%9.0fc 0 3) labels("Observations" "Countries" "Within-R$^2$" "K-P F-stat on excl. IV's")) margin legend indicate("Country & year FE's=_Iyear_*") drop(_cons)
 }
