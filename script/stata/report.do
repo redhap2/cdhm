@@ -38,6 +38,21 @@ gen transcont3= D.polityD77 if D.polityD77>=3 & D.polityD77!=.
 replace transcont3=0 if D.polityD77<3 & D.polityD77!=.
 
 
+
+
+
+gen transcont2scale= 1 + D.polityD77 if D.polityD77>=2 & D.polityD77!=.
+replace transcont2scale=0 if D.polityD77<2 & D.polityD77!=.
+
+
+democ consolidée
+
+maximum de vraisemblance
+
+toke
+
+
+
 eststo b_trans_1: xi: xtreg transD77 L_ratio_15_19_t $c_cov i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo b_trans_2: xi: xtreg transD77 L16_netfertility5 $c_cov i.year  if  inrange(year, 1950, 2018), fe cluster(ccode)	
 eststo b_trans_3: xi: xtivreg2 transD77 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year  if  inrange(year, 1950, 2018), fe  cluster(ccode)
@@ -658,10 +673,10 @@ eststo bin_trans_2: xi: xtreg transD77 L16_netfertility5 $c_cov i.year  bin_ceil
 eststo bin_trans_3: xi: xtivreg2 transD77 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_trans_4: xi: xtreg transD77 L21_netfertility_neighbor5 $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_trans_5: xi: xtivreg2 transD77 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_trans_5: xi: xtivreg2 transD77 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_trans_6: xi: xtreg transD77 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_trans_7: xi: xtivreg2 transD77 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_trans_7: xi: xtivreg2 transD77 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
@@ -675,10 +690,10 @@ eststo bin_trans1_2: xi: xtreg transD771 L16_netfertility5 $c_cov i.year  bin_ce
 eststo bin_trans1_3: xi: xtivreg2 transD771 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_trans1_4: xi: xtreg transD771 L21_netfertility_neighbor5 $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_trans1_5: xi: xtivreg2 transD771 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_trans1_5: xi: xtivreg2 transD771 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_trans1_6: xi: xtreg transD771 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_trans1_7: xi: xtivreg2 transD771 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_trans1_7: xi: xtivreg2 transD771 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
@@ -690,10 +705,10 @@ eststo bin_trans3_2: xi: xtreg transD773 L16_netfertility5 $c_cov i.year  bin_ce
 eststo bin_trans3_3: xi: xtivreg2 transD773 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_trans3_4: xi: xtreg transD773 L21_netfertility_neighbor5 $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_trans3_5: xi: xtivreg2 transD773 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_trans3_5: xi: xtivreg2 transD773 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_trans3_6: xi: xtreg transD773 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_trans3_7: xi: xtivreg2 transD773 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_trans3_7: xi: xtivreg2 transD773 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
@@ -706,10 +721,10 @@ eststo bin_transplus_2: xi: xtreg transplus L16_netfertility5 $c_cov i.year  bin
 eststo bin_transplus_3: xi: xtivreg2 transplus (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_transplus_4: xi: xtreg transplus L21_netfertility_neighbor5 $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_transplus_5: xi: xtivreg2 transplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_transplus_5: xi: xtivreg2 transplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_transplus_6: xi: xtreg transplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_transplus_7: xi: xtivreg2 transplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_transplus_7: xi: xtivreg2 transplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
@@ -721,10 +736,10 @@ eststo bin_cont_2: xi: xtreg transitionD77 L16_netfertility5 $c_cov i.year  bin_
 eststo bin_cont_3: xi: xtivreg2 transitionD77 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_cont_4: xi: xtreg transitionD77 L21_netfertility_neighbor5 $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_cont_5: xi: xtivreg2 transitionD77 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_cont_5: xi: xtivreg2 transitionD77 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_cont_6: xi: xtreg transitionD77 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_cont_7: xi: xtivreg2 transitionD77 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_cont_7: xi: xtivreg2 transitionD77 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
@@ -737,10 +752,10 @@ eststo bin_contplus_2: xi: xtreg transcontplus L16_netfertility5 $c_cov i.year  
 eststo bin_contplus_3: xi: xtivreg2 transcontplus (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_contplus_4: xi: xtreg transcontplus L21_netfertility_neighbor5 $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_contplus_5: xi: xtivreg2 transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_contplus_5: xi: xtivreg2 transcontplus (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_contplus_6: xi: xtreg transcontplus L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_contplus_7: xi: xtivreg2 transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_contplus_7: xi: xtivreg2 transcontplus (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
@@ -753,10 +768,10 @@ eststo bin_cont2_2: xi: xtreg transcont2 L16_netfertility5 $c_cov i.year  bin_ce
 eststo bin_cont2_3: xi: xtivreg2 transcont2 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_cont2_4: xi: xtreg transcont2 L21_netfertility_neighbor5 $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_cont2_5: xi: xtivreg2 transcont2 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_cont2_5: xi: xtivreg2 transcont2 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_cont2_6: xi: xtreg transcont2 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_cont2_7: xi: xtivreg2 transcont2 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_cont2_7: xi: xtivreg2 transcont2 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
@@ -768,10 +783,10 @@ eststo bin_cont3_2: xi: xtreg transcont3 L16_netfertility5 $c_cov i.year  bin_ce
 eststo bin_cont3_3: xi: xtivreg2 transcont3 (L_ratio_15_19_t = L16_netfertility5) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe  cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_cont3_4: xi: xtreg transcont3 L21_netfertility_neighbor5 $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_cont3_5: xi: xtivreg2 transcont3 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_cont3_5: xi: xtivreg2 transcont3 (L_ratio_15_19_t = L21_netfertility_neighbor5) $n_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 eststo bin_cont3_6: xi: xtreg transcont3 L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2 $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
-eststo bin_cont3_7: xi: xtivreg2 transcont3 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year if inrange(year, 1950, 2018), fe cluster(ccode)
+eststo bin_cont3_7: xi: xtivreg2 transcont3 (L_ratio_15_19_t =  L17_mean5_spei12_agr2_2 L17_mean5_spei12 L17_agrgdp_2) $c_cov i.year  bin_ceil if inrange(year, 1950, 2018), fe cluster(ccode)
 estadd scalar kp_fstat = e(rkf)
 
 noisily{
